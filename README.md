@@ -1,4 +1,4 @@
-# 🔬 Cycle Combustion Calc - Microsserviço
+# 🔬 Cycle Comb Calc - Microsserviço
 
 Microsserviço desenvolvido com **Python** e **FastAPI** para realizar cálculos termodinâmicos relacionados ao ciclo combinado Brayton-Rankine à gás (como calor específico, entalpia, entropia, poder calorífico inferior, eficiências e potências geradas), utilizando fórmulas da literatura técnica.
 
