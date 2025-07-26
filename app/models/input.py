@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 
 class Input(BaseModel):
   """
-    All variables for calculations
+  All variables for calculations
   """
   # Fuel Composition
   methane_molar_fraction_fuel: float = Field(..., le=100, ge=0)

@@ -1,10 +1,25 @@
 from fastapi import FastAPI
-from .routes import api
+from pydantic import BaseModel
+from .routes import simulation
+from typing import List
 
-app = FastAPI()
-app.include_router(api.router)
+app = FastAPI(
+    title="Simulator for combined thermodynamic cycles (Brayton-Rankine)")
+app.include_router(simulation.router)
 
 
-@app.get("/")
-async def root():
-  return {"message": "Testando"}
+class InfoResponse(BaseModel):
+    message: str
+    description: str
+    available_endpoints: List[str]
+    documentation: str
+
+
+@app.get("/", response_model=InfoResponse)
+async def read_root():
+    return InfoResponse(
+        message="Welcome to the Combined Thermodynamic Cycles Calculations API!",
+        description="Microservice for combined thermodynamic cycles calculations.",
+        available_endpoints=["POST /simulation", "GET /substances"],
+        documentation="/docs"
+    )

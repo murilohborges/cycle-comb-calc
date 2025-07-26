@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 
 class Output(BaseModel):
   """
-    All results of calculations
+  All results of calculations
   """
   # Gas turbine (Brayton Cycle)
   PCI_fuel: float = Field(..., gt=0)
