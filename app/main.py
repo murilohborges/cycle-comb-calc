@@ -15,7 +15,7 @@ class InfoResponse(BaseModel):
     documentation: str
 
 
-@app.get("/", response_model=InfoResponse)
+@app.get("/", response_model=InfoResponse, tags=["Root"])
 async def read_root():
     return InfoResponse(
         message="Welcome to the Combined Thermodynamic Cycles Calculations API!",
