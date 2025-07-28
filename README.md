@@ -9,23 +9,31 @@ Microsserviço desenvolvido com **Python** e **FastAPI** para realizar cálculos
 ```bash
 cycle-comb-calc/
 │
+├── .devcontainer                   # Configurações do container para desenvolvimento
 ├── app/
-│   ├── __init__.py             # Define o pacote 'app'
-│   ├── main.py                 # Ponto de entrada do microsserviço (FastAPI)
-│   ├── api/
+│   ├── __init__.py                 # Define o pacote 'app'
+│   ├── main.py                     # Ponto de entrada do microsserviço (FastAPI)
+│   ├── routes/                     # Rotas da API
 │   │   ├── __init__.py
-│   │   └── routes.py           # Rotas da API
-│   ├── services/
-│   │   └── calculations.py     # Lógica dos cálculos termodinâmicos
+│   │   ├── simulation.py           # Rota para o endpoint "/simulation"
+│   │   └── substances.py           # Rota para o endpoint "/substances"
 │   └── models/
-│       └── schemas.py          # Schemas Pydantic para validação de dados
+│       ├── __init__.py
+│       ├── input.py                # Schema Pydantic para validação de dados de entrada do endpoint para "/simulation"
+│       ├── output.py               # Schema Pydantic para validação de dados de saída do endpoint para "/simulation"
+│       └── substance.py            # Schema Pydantic para validação de dados de saída do endpoint para "/substances"
 │
-├── tests/                      # Testes com pytest
-│   └── test_calculations.py
+├── database/                       # Pasta com arquivos referentes ao banco de dados
+│       ├── __init__.py
+│       ├── create.py               # Script para executar a criação da engine do banco de dados
+│       ├── default_substances.json # Arquivo json com os dados das substância padrão"
+│       ├── engine.json             # Script para criação da engine do banco de dados"
+│       ├── models.json             # Script com o modelos das tabelas e suas colunas do banco de dados"
+│       └── seed.py                 # Script para popular do banco de dados com os dados das substâncias padrão"
 │
-├── requirements.txt            # Lista de dependências do projeto
-├── .gitignore                  # Arquivos/pastas ignorados pelo Git
-└── README.md                   # Documentação do projeto
+├── requirements.txt                # Lista de dependências do projeto
+├── .gitignore                      # Arquivos/pastas ignorados pelo Git
+└── README.md                       # Documentação do projeto
 ```
 
 
