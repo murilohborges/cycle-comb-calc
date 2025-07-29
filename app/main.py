@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from .routes import simulation, substance
+from .routes import simulation, substances
 from typing import List
 
 app = FastAPI(
   title="Simulator for combined thermodynamic cycles (Brayton-Rankine)")
 app.include_router(simulation.router)
-app.include_router(substance.router)
+app.include_router(substances.router)
 
 
 class InfoResponse(BaseModel):
