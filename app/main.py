@@ -4,23 +4,23 @@ from .routes import simulation, substance
 from typing import List
 
 app = FastAPI(
-    title="Simulator for combined thermodynamic cycles (Brayton-Rankine)")
+  title="Simulator for combined thermodynamic cycles (Brayton-Rankine)")
 app.include_router(simulation.router)
 app.include_router(substance.router)
 
 
 class InfoResponse(BaseModel):
-    message: str
-    description: str
-    available_endpoints: List[str]
-    documentation: str
+  message: str
+  description: str
+  available_endpoints: List[str]
+  documentation: str
 
 
 @app.get("/", response_model=InfoResponse, tags=["Root"])
 async def read_root():
-    return InfoResponse(
-        message="Welcome to the Combined Thermodynamic Cycles Calculations API!",
-        description="Microservice for combined thermodynamic cycles calculations.",
-        available_endpoints=["POST /simulation", "GET /substances"],
-        documentation="/docs"
-    )
+  return InfoResponse(
+    message="Welcome to the Combined Thermodynamic Cycles Calculations API!",
+    description="Microservice for combined thermodynamic cycles calculations.",
+    available_endpoints=["POST /simulation", "GET /substances"],
+    documentation="/docs"
+  )
