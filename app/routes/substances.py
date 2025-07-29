@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import FastAPI
 from ..models.substance import Substance
 from typing import List
 
