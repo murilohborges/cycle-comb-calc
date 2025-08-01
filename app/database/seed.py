@@ -6,7 +6,7 @@ from .engine import engine
 
 
 def populate_database_tables():
-  with open("database/default_substances.json", "r", encoding="utf-8") as f:
+  with open("app/database/default_substances.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
     with Session(engine) as session:
