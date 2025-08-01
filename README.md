@@ -70,7 +70,13 @@ pip install -r requirements.txt
 ```
 <br>
 
-5. Execute o servidor:
+5. Execute o comando para criar e popular o banco de dados com dados padrão:
+```bash
+python -m app.database.seed
+```
+<br>
+
+6. Execute o servidor:
 ```bash
 uvicorn app.main:app --reload
 ```
