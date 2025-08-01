@@ -7,3 +7,6 @@ class Substance(BaseModel):
   name: str
   formula: str
   cas_number: str
+
+  class Config:
+    orm_mode = True
