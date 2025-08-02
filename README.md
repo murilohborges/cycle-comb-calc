@@ -47,7 +47,7 @@ cd cycle-comb-calc
 ```
 <br>
 
-2. Clone o repositório:
+2. Crie o ambiente virtual:
 ```bash
 python -m venv venv
 ```
