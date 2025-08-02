@@ -64,7 +64,7 @@ venv\Scripts\activate
 ```
 <br>
 
-4. Ative o ambiente virtual:
+4. Instale os pacotes necessários:
 ```bash
 pip install -r requirements.txt
 ```
