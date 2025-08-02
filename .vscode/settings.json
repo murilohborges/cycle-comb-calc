@@ -4,5 +4,7 @@
   "editor.detectIndentation": false,
   "[python]": {
     "editor.tabSize": 2
-  }
+  },
+  "editor.formatOnSave": false,
+  "python.formatting.provider": "none"
 }
