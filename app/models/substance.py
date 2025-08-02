@@ -8,5 +8,5 @@ class Substance(BaseModel):
   formula: str
   cas_number: str
 
-  class Config:
-    orm_mode = True
+  class ConfigDict:
+    from_attributes = True
