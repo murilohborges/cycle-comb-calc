@@ -24,12 +24,8 @@ def test_get_all_substances_returns_data(mocker):
   # Causes session.exec(...) to return this mock
   mock_session.exec.return_value = mock_result
 
-  # Mocks the Session context (with `__enter__` and `__exit__`)
-  mock_session_class = mocker.patch("app.controllers.substances_controller.Session")
-  mock_session_class.return_value.__enter__.return_value = mock_session
-
   # Run the function with the mocked session
-  result = get_all_substances()
+  result = get_all_substances(mock_session)
 
   # Checks if the result matches what was expected
   assert result == mock_substances
