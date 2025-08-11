@@ -61,7 +61,7 @@ general_input = FullCycleInput(
 
 class FullCycle:
   
-  def create_full_cycles_combined():
+  def create_full_cycles_combined(input, db):
 
 
     result_of_cycles = FullCycleResult(
