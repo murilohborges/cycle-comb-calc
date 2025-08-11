@@ -8,3 +8,4 @@ def test_create_simulation_returns_result():
   result = create_simulation(input)
 
   print(result)
+  assert len(result) == 0
