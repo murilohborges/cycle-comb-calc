@@ -5,7 +5,7 @@ class Output(BaseModel):
   All results of calculations
   """
   # Gas turbine (Brayton Cycle)
-  PCI_fuel: float = Field(..., gt=0)
+  LHV_fuel: float = Field(..., gt=0)
   air_mass_flow: float = Field(..., gt=0)
   exhaustion_gas_tempature: float = Field(..., gt=0)
   exhaustion_gas_mass_flow: float = Field(..., gt=0)
