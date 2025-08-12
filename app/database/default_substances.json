@@ -2,7 +2,7 @@
   {
     "name": "methane",
     "molar_mass": 16.043,
-    "lower_calorific_value": 50039.61,
+    "lower_calorific_value": 802625,
     "formula": "CH4",
     "cas_number": "74-82-8",
     "param_A": 1.702,
@@ -14,7 +14,7 @@
   {
     "name": "ethane",
     "molar_mass": 30.070,
-    "lower_calorific_value": 47510.87,
+    "lower_calorific_value": 1428652,
     "formula": "C2H6",
     "cas_number": "74-84-0",
     "param_A": 1.131,
@@ -26,7 +26,7 @@
   {
     "name": "propane",
     "molar_mass": 44.097,
-    "lower_calorific_value": 46332.38,
+    "lower_calorific_value": 2043119,
     "formula": "C3H8",
     "cas_number": "74-98-6",
     "param_A": 1.213,
@@ -38,7 +38,7 @@
   {
     "name": "n-butane",
     "molar_mass": 58.124,
-    "lower_calorific_value": 45718.4,
+    "lower_calorific_value": 2657336,
     "formula": "C4H10",
     "cas_number": "106-97-8",
     "param_A": 1.935,
@@ -74,7 +74,7 @@
   {
     "name": "hydrogen",
     "molar_mass": 2.016,
-    "lower_calorific_value": 119949.4,
+    "lower_calorific_value": 241818,
     "formula": "H2",
     "cas_number": "1333-74-0",
     "param_A": 3.249,
