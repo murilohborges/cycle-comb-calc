@@ -1,8 +1,10 @@
 from collections import namedtuple
+from .gas_turbine import GasTurbine
+from .gas_fuel import GasFuel
 
 # Tuple test
-FullCycleResult = namedtuple("FullCycleResult", [
-    "PCI_fuel", "air_mass_flow", "exhaustion_gas_tempature",
+FullCyclesResult = namedtuple("FullCyclesResult", [
+    "LHV_fuel", "air_mass_flow", "exhaustion_gas_tempature",
     "exhaustion_gas_mass_flow", "thermal_charge", "saturated_water_mass_flow",
     "make_up_water_mass_flow", "cooling_water_mass_flow", "quality_exhaustion_steam_turbine",
     "high_steam_mass_flow", "medium_steam_mass_flow", "low_steam_mass_flow",
@@ -12,7 +14,7 @@ FullCycleResult = namedtuple("FullCycleResult", [
 ])
 
 # Tuple input test
-FullCycleInput = namedtuple("FullCycleInput", [
+FullCyclesInput = namedtuple("FullCyclesInput", [
     "methane_molar_fraction_fuel", "ethane_molar_fraction_fuel", "propane_molar_fraction_fuel",
     "butane_molar_fraction_fuel", "water_molar_fraction_fuel", "carbon_dioxide_molar_fraction_fuel",
     "hydrogen_molar_fraction_fuel", "nitrogen_molar_fraction_fuel", "fuel_mass_flow",
@@ -21,7 +23,7 @@ FullCycleInput = namedtuple("FullCycleInput", [
     "chimney_gas_temperature", "purge_level", "high_steam_level_pressure",
     "medium_steam_level_pressure", "low_steam_level_pressure", "high_steam_level_temperature", "medium_steam_level_temperature", "low_steam_level_temperature", "high_steam_level_fraction", "medium_steam_level_fraction", "high_steam_level_efficiency", "medium_steam_level_efficiency", "low_steam_level_efficiency", "reductor_generator_set_efficiency", "pump_efficiency", "engine_pump_efficiency", "power_factor_pump_efficiency", "condenser_operation_pressure", "range_temperature_cooling_tower"
 ])
-general_input = FullCycleInput(
+general_input = FullCyclesInput(
     methane_molar_fraction_fuel=87.08,
     ethane_molar_fraction_fuel=7.83,
     propane_molar_fraction_fuel=2.94,
@@ -59,13 +61,16 @@ general_input = FullCycleInput(
   )
 
 
-class FullCycle:
+class FullCycles:
+  def __init__(self, input, db):
+    self.gas_turbine = GasTurbine(input, db)
+    self.gas_fuel = GasFuel(input, db)
   
-  def create_full_cycles_combined(input, db):
+  def create_full_cycles_combined(self):
+    LHV_fuel = round(self.gas_fuel.LHV_fuel_calc(), 2)
 
-
-    result_of_cycles = FullCycleResult(
-      PCI_fuel=1.0,
+    result_of_cycles = FullCyclesResult(
+      LHV_fuel,
       air_mass_flow=1.0,
       exhaustion_gas_tempature=1.0,
       exhaustion_gas_mass_flow=1.0,
