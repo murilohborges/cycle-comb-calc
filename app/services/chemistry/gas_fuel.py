@@ -1,5 +1,5 @@
 from sqlmodel import select
-from ..database.models import Substance
+from ...database.models import Substance
 
 class GasFuel:
   def __init__(self, input, db):

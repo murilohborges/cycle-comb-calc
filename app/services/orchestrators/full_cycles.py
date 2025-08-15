@@ -1,6 +1,6 @@
 from collections import namedtuple
-from .gas_turbine import GasTurbine
-from .gas_fuel import GasFuel
+from ..equipments.gas_turbine import GasTurbine
+from ..chemistry.gas_fuel import GasFuel
 
 # Tuple test
 FullCyclesResult = namedtuple("FullCyclesResult", [

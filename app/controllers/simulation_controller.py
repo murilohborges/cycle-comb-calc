@@ -1,4 +1,4 @@
-from ..services.full_cycles import FullCycles
+from ..services.orchestrators.full_cycles import FullCycles
 
 def create_simulation(input, db):
   full_cycles = FullCycles(input, db)

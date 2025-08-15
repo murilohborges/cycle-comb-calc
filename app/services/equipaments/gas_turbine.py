@@ -1,4 +1,4 @@
-from .gas_fuel import GasFuel
+from ..chemistry.gas_fuel import GasFuel
 
 class GasTurbine:
   def __init__(self, input, db):

@@ -1,5 +1,5 @@
 import pytest
-from app.services.gas_fuel import GasFuel
+from app.services.chemistry.gas_fuel import GasFuel
 from tests.conftest import MockDB
 
 # ----------------------------
