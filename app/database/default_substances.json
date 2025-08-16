@@ -78,9 +78,9 @@
     "formula": "H2",
     "cas_number": "1333-74-0",
     "param_A": 3.249,
-    "param_B": 0.422,
+    "param_B": 0.422e3,
     "param_C": 0,
-    "param_D": 0.083,
+    "param_D": 0.083e-5,
     "is_default": true
   },
   {
@@ -90,9 +90,21 @@
     "formula": "N2",
     "cas_number": "7727-37-9",
     "param_A": 3.280,
-    "param_B": 0.593,
+    "param_B": 0.593e3,
     "param_C": 0,
-    "param_D": 0.040,
+    "param_D": 0.040e-5,
+    "is_default": true
+  },
+  {
+    "name": "oxygen",
+    "molar_mass": 31.998,
+    "lower_calorific_value": 0,
+    "formula": "O2",
+    "cas_number": "7782-44-7",
+    "param_A": 3.639,
+    "param_B": 0.506e3,
+    "param_C": 0,
+    "param_D": -0.227e-5,
     "is_default": true
   }
 ]
