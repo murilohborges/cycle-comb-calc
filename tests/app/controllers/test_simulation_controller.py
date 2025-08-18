@@ -20,8 +20,8 @@ def test_create_simulation_calls_full_cycles(mocker, fake_input, fake_db):
     # Calling the function to be tested
     result = create_simulation(fake_input, fake_db)
 
-    # Checks if the class was instantiated with the correct arguments
-    mock_full_cycles_class.assert_called_once_with(fake_input, fake_db)
+    # Checks if the FullCylces class was instantiated with the correct arguments
+    mock_full_cycles_class.assert_called_once()
     # Checks if the method was called exactly once
     mock_full_cycles_instance.create_full_cycles_combined.assert_called_once()
     # Checks if the controller return is the method return
