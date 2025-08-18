@@ -2,10 +2,8 @@ import pytest
 from app.services.chemistry.gas_fuel import GasFuel
 from tests.conftest import MockDB
 
-# ----------------------------
-# Fixture parametrizada para frações de combustível
-# ----------------------------
 
+# Fixture parametrizada para frações de combustível
 @pytest.fixture(
       params=[
         # sum = 1.0 (valid)
@@ -23,6 +21,14 @@ def fractions_case(request):
     """
     return request.param
 
+# Mock for SubstanceRepository
+class MockSubstanceRepository:
+    def __init__(self, results):
+        self.results = results
+
+    def get_all(self):
+        return self.results
+
 class TestGasFuel:
   # Testing validation of fraction of componentes of fuel
   def test_fraction_sum_validation(self, mock_input_factory, fractions_case):
@@ -30,10 +36,10 @@ class TestGasFuel:
     Tests the validity of the sum of fractions.
     Scenarios: sum == 100%, <100%, >100%.
     """
-    mock_db = MockDB(results=[(10.0, 2.0), (20.0, 4.0)])  # LHV e molar mass fictitious values
+    mock_repository = MockSubstanceRepository(results=[(10.0, 2.0), (20.0, 4.0)]) # LHV e molar mass fictitious values
     mock_input = mock_input_factory(**fractions_case)
 
-    service = GasFuel(mock_input, mock_db)
+    service = GasFuel(mock_input, mock_repository)
 
     result_sum = sum(v / 100 for v in fractions_case.values())
 
@@ -53,9 +59,9 @@ class TestGasFuel:
     """
     fractions = {"h2_molar_fraction_fuel": 30, "ch4_molar_fraction_fuel": 70}
     mock_input = mock_input_factory(**fractions)
-    mock_db = MockDB(results=[(100.0, 2.0), (200.0, 4.0)])
+    mock_repository = MockSubstanceRepository(results=[(100.0, 2.0), (200.0, 4.0)])
 
-    service = GasFuel(mock_input, mock_db)
+    service = GasFuel(mock_input, mock_repository)
     result = service.LHV_fuel_calc()
 
     # Checks if the result is calculated correctly
