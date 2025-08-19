@@ -13,10 +13,34 @@ class SubstanceRepository:
   
   def get_all(self) -> List[Tuple[float, float]]:
     """
-    Return all substances as list of tuples:
-    (lower_calorific_value, molar_mass)
+      Return all substances as dict indexed by name.
+      Example:
+      {
+        "CH4": {
+            "molar_mass": 16.04,
+            "lower_calorific_value": 802_300
+          },
+          "C2H6": {
+            "molar_mass": 30.07,
+            "lower_calorific_value": 1428_000
+          }
+      }
     """
-    statement = select(Substance.lower_calorific_value, Substance.molar_mass)
+    statement = select(
+      Substance.id,
+      Substance.name,
+      Substance.molar_mass,
+      Substance.lower_calorific_value
+    )
     result = self.session.exec(statement).all()
-    return result
+
+    # Returning a dictionary indexed by name
+    return {
+      name: {
+        "id": id_,
+        "molar_mass": molar_mass,
+        "lower_calorific_value": lower_calorific_value
+      }
+      for id_, name, molar_mass, lower_calorific_value in result
+    }
   
