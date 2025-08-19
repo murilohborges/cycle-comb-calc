@@ -14,7 +14,7 @@ def test_create_simulation_route():
     methane_molar_fraction_fuel=87.08,
     ethane_molar_fraction_fuel=7.83,
     propane_molar_fraction_fuel=2.94,
-    butane_molar_fraction_fuel=0,
+    n_butane_molar_fraction_fuel=0,
     water_molar_fraction_fuel=0,
     carbon_dioxide_molar_fraction_fuel=0.68,
     hydrogen_molar_fraction_fuel=0,
