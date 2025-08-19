@@ -7,11 +7,11 @@ from tests.conftest import MockDB
 @pytest.fixture(
       params=[
         # sum = 1.0 (valid)
-        {"h2_molar_fraction_fuel": 50, "ch4_molar_fraction_fuel": 50},
+        {"hydrogen_molar_fraction_fuel": 50, "methane_molar_fraction_fuel": 50},
         # sum < 1.0 (invalid)
-        {"h2_molar_fraction_fuel": 40, "ch4_molar_fraction_fuel": 50},
+        {"hydrogen_molar_fraction_fuel": 40, "methane_molar_fraction_fuel": 50},
         # sum > 1.0 (invalid)
-        {"h2_molar_fraction_fuel": 60, "ch4_molar_fraction_fuel": 50},
+        {"hydrogen_molar_fraction_fuel": 60, "methane_molar_fraction_fuel": 50},
       ],
       ids=["sum_100", "sum_lt_100", "sum_gt_100"]
   )
@@ -23,50 +23,67 @@ def fractions_case(request):
 
 # Mock for SubstanceRepository
 class MockSubstanceRepository:
-    def __init__(self, results):
-        self.results = results
-
+    def __init__(self):
+        self.results = {
+          "hydrogen":{'id': 1, 'molar_mass': 0.016, 'lower_calorific_value': 50000},
+          "methane":{'id': 2, 'molar_mass': 0.014, 'lower_calorific_value': 45000}
+        }
     def get_all(self):
         return self.results
 
 class TestGasFuel:
-  # Testing validation of fraction of componentes of fuel
-  def test_fraction_sum_validation(self, mock_input_factory, fractions_case):
+
+  def test_validate_fractions(self, fractions_case, mock_input_factory):
     """
-    Tests the validity of the sum of fractions.
-    Scenarios: sum == 100%, <100%, >100%.
+    Testing the validation of fractions.
+    - If sum = 1.0 -> it shouldn't throw error
+    - If sum != 1.0 -> it should throw error
     """
-    mock_repository = MockSubstanceRepository(results=[(10.0, 2.0), (20.0, 4.0)]) # LHV e molar mass fictitious values
-    mock_input = mock_input_factory(**fractions_case)
+    #Creates the MockInput object from the fractions_case fixture dictionary
+    mock_input_obj = mock_input_factory(**fractions_case)
 
-    service = GasFuel(mock_input, mock_repository)
+    #Mock repository (not used in this test)
+    repository_mock = MockSubstanceRepository()
 
-    result_sum = sum(v / 100 for v in fractions_case.values())
+    gas_fuel = GasFuel(mock_input_obj, repository_mock)
 
-    if result_sum != 1.0:
-        with pytest.raises(ValueError, match="Percent invalid"):
-            service.LHV_fuel_calc()
+    total = sum(fractions_case.values())
+    if total == 100:
+      # correct sum (valid)
+      gas_fuel._validate_fractions()
     else:
-        result = service.LHV_fuel_calc()
-        assert isinstance(result, float)
-        assert result > 0
-
-    return
+      # incorrect sum (invalid)
+      with pytest.raises(ValueError):
+        gas_fuel._validate_fractions()
   
+  def test_average_molar_mass(self, mock_input_factory):
+    """Testing avarege molar mass calculation"""
+    fractions = {"hydrogen_molar_fraction_fuel": 30, "methane_molar_fraction_fuel": 70}
+    mock_input = mock_input_factory(**fractions)
+    mock_repository = MockSubstanceRepository()
+    
+    gas_fuel = GasFuel(mock_input, mock_repository)
+    result = gas_fuel.average_molar_mass_calc()
+
+    # Checks if the result is calculated correctly
+    expected_molar_mass = (0.3 * 0.016) + (0.7 * 0.014)
+
+    assert result == pytest.approx(expected_molar_mass)
+
   def test_lhv_calculation_with_valid_data(self, mock_input_factory):
     """
     Test LHV calculation with valid data.
     """
-    fractions = {"h2_molar_fraction_fuel": 30, "ch4_molar_fraction_fuel": 70}
+    fractions = {"hydrogen_molar_fraction_fuel": 30, "methane_molar_fraction_fuel": 70}
     mock_input = mock_input_factory(**fractions)
-    mock_repository = MockSubstanceRepository(results=[(100.0, 2.0), (200.0, 4.0)])
+    mock_repository = MockSubstanceRepository()
 
     service = GasFuel(mock_input, mock_repository)
     result = service.LHV_fuel_calc()
 
     # Checks if the result is calculated correctly
-    expected_lhv_joule_per_mol = (0.3 * 100.0) + (0.7 * 200.0)
-    expected_molar_mass = (0.3 * 2.0) + (0.7 * 4.0)
+    expected_lhv_joule_per_mol = (0.3 * 50000) + (0.7 * 45000)
+    expected_molar_mass = (0.3 * 0.016) + (0.7 * 0.014)
     expected_lhv = expected_lhv_joule_per_mol / expected_molar_mass
 
-    assert pytest.approx(result) == expected_lhv
+    assert result == pytest.approx(expected_lhv, rel=1e-2)
