@@ -23,5 +23,5 @@ def test_get_all(db_session):
     repo = SubstanceRepository(db_session)
     results = repo.get_all()
     assert len(results) == 2
-    assert results[0] == (50000, 0.016)
-    assert results[1] == (45000, 0.014)
+    assert results["hydrogen"] == ({'id': 1, 'molar_mass': 0.016, 'lower_calorific_value': 50000})
+    assert results["methane"] == ({'id': 2, 'molar_mass': 0.014, 'lower_calorific_value': 45000})
