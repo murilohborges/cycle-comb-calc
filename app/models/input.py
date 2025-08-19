@@ -8,7 +8,7 @@ class Input(BaseModel):
   methane_molar_fraction_fuel: float = Field(..., le=100, ge=0)
   ethane_molar_fraction_fuel: float = Field(..., le=100, ge=0)
   propane_molar_fraction_fuel: float = Field(..., le=100, ge=0)
-  butane_molar_fraction_fuel: float = Field(..., le=100, ge=0)
+  n_butane_molar_fraction_fuel: float = Field(..., le=100, ge=0)
   water_molar_fraction_fuel: float = Field(..., le=100, ge=0)
   carbon_dioxide_molar_fraction_fuel: float = Field(..., le=100, ge=0)
   hydrogen_molar_fraction_fuel: float = Field(..., le=100, ge=0)
