@@ -16,14 +16,14 @@ class SubstanceRepository:
       Return all substances as dict indexed by name.
       Example:
       {
-        "CH4": {
+        "methane": {
             "molar_mass": 16.04,
             "lower_calorific_value": 802_300
           },
-          "C2H6": {
-            "molar_mass": 30.07,
-            "lower_calorific_value": 1428_000
-          }
+        "ethane": {
+          "molar_mass": 30.07,
+          "lower_calorific_value": 1428_000
+        }
       }
     """
     statement = select(
