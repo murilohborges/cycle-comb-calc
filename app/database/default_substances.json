@@ -6,8 +6,8 @@
     "formula": "CH4",
     "cas_number": "74-82-8",
     "param_A": 1.702,
-    "param_B": 9.081e3,
-    "param_C": -2.164e6,
+    "param_B": 9.081e-3,
+    "param_C": -2.164e-6,
     "param_D": 0,
     "is_default": true
   },
@@ -18,8 +18,8 @@
     "formula": "C2H6",
     "cas_number": "74-84-0",
     "param_A": 1.131,
-    "param_B": 19.225e3,
-    "param_C": -5.561e6,
+    "param_B": 19.225e-3,
+    "param_C": -5.561e-6,
     "param_D": 0,
     "is_default": true
   },
@@ -30,8 +30,8 @@
     "formula": "C3H8",
     "cas_number": "74-98-6",
     "param_A": 1.213,
-    "param_B": 28.785e3,
-    "param_C": -8.824e6,
+    "param_B": 28.785e-3,
+    "param_C": -8.824e-6,
     "param_D": 0,
     "is_default": true
   },
@@ -42,8 +42,8 @@
     "formula": "C4H10",
     "cas_number": "106-97-8",
     "param_A": 1.935,
-    "param_B": 36.915e3,
-    "param_C": -11.402e6,
+    "param_B": 36.915e-3,
+    "param_C": -11.402e-6,
     "param_D": 0,
     "is_default": true
   },
@@ -54,9 +54,9 @@
     "formula": "H2O",
     "cas_number": "7732-18-5",
     "param_A": 3.470,
-    "param_B": 1.450e3,
+    "param_B": 1.450e-3,
     "param_C": 0,
-    "param_D": 0.121e-5,
+    "param_D": 0.121e5,
     "is_default": true
   },
   {
@@ -66,9 +66,9 @@
     "formula": "CO2",
     "cas_number": "124-38-9",
     "param_A": 5.457,
-    "param_B": 1.045e3,
+    "param_B": 1.045e-3,
     "param_C": 0,
-    "param_D": -1.157e-5,
+    "param_D": -1.157e5,
     "is_default": true
   },
   {
@@ -78,9 +78,9 @@
     "formula": "H2",
     "cas_number": "1333-74-0",
     "param_A": 3.249,
-    "param_B": 0.422e3,
+    "param_B": 0.422e-3,
     "param_C": 0,
-    "param_D": 0.083e-5,
+    "param_D": 0.083e5,
     "is_default": true
   },
   {
@@ -90,9 +90,9 @@
     "formula": "N2",
     "cas_number": "7727-37-9",
     "param_A": 3.280,
-    "param_B": 0.593e3,
+    "param_B": 0.593e-3,
     "param_C": 0,
-    "param_D": 0.040e-5,
+    "param_D": 0.040e5,
     "is_default": true
   },
   {
@@ -102,9 +102,9 @@
     "formula": "O2",
     "cas_number": "7782-44-7",
     "param_A": 3.639,
-    "param_B": 0.506e3,
+    "param_B": 0.506e-3,
     "param_C": 0,
-    "param_D": -0.227e-5,
+    "param_D": -0.227e5,
     "is_default": true
   }
 ]
