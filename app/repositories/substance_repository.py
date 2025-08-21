@@ -11,16 +11,18 @@ class SubstanceRepository:
   def __init__(self, session: Session):
     self.session = session
   
-  def get_all(self) -> List[Tuple[float, float]]:
+  def get_all(self):
     """
       Return all substances as dict indexed by name.
       Example:
       {
         "methane": {
+            "id": 1
             "molar_mass": 16.04,
             "lower_calorific_value": 802_300
           },
         "ethane": {
+          "id": 2
           "molar_mass": 30.07,
           "lower_calorific_value": 1428_000
         }
