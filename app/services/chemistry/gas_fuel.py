@@ -44,7 +44,7 @@ class GasFuel:
     avg_molar_mass = self.average_molar_mass_calc()
 
     # Calculating LHV fuel in kJ/kg
-    LHV_fuel = round(LHV_fuel_joule_per_mol/avg_molar_mass, 2)
+    LHV_fuel = LHV_fuel_joule_per_mol/avg_molar_mass
 
     return LHV_fuel
 
