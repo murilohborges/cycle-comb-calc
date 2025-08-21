@@ -2,6 +2,11 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from .routes import simulation, substances
 from typing import List
+import logging
+
+# Show only SQLAlchemy warnings and errors
+logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
+logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
 app = FastAPI(
   title="Simulator for combined thermodynamic cycles (Brayton-Rankine)")
