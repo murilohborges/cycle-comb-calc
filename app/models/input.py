@@ -20,7 +20,7 @@ class Input(BaseModel):
   air_input_temperature: float = Field(..., le=1226.85, ge=24.85)
   percent_excess_air: float = Field(..., ge=0)
   local_atmospheric_pressure: float = Field(..., le=1, gt = 0.9)
-  relative_humity: float = Field(..., le=100, ge=0)
+  relative_humidity: float = Field(..., le=100, ge=0)
   gas_turbine_efficiency: float = Field(..., le=50, ge=10)
   chimney_gas_temperature: float = Field(..., le=200, ge=80)
 
