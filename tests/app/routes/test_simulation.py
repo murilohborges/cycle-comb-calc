@@ -24,7 +24,7 @@ def test_create_simulation_route():
     air_input_temperature=25,
     percent_excess_air=164.15,
     local_atmospheric_pressure=1,
-    relative_humity=60,
+    relative_humidity=60,
     gas_turbine_efficiency=36.78,
     chimney_gas_temperature=99.7,
     purge_level=0,
