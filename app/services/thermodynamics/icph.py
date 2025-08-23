@@ -18,4 +18,4 @@ class ICPH:
 
     heat = (self.R/molar_mass) * ((A*temp_in*(tau - 1)) + ((B/2)*(temp_in**2)*((tau**2)-1)) + ((C/3)*(temp_in**3)*((tau**3)-1)) + ((D/temp_in)*((tau-1)/tau)))
 
-    return abs(heat)
+    return heat
