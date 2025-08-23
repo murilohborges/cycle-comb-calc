@@ -17,7 +17,7 @@ class GasFuel:
   def _validate_fractions(self):
     """Validate sum of percents of components in gas fuel"""
     sum_percent_components = sum(self.fractions.values())
-    if not (0.999 <= sum_percent_components <= 1.001):  # tolerância
+    if not (0.999 <= sum_percent_components <= 1.001):
       raise ValueError(f"Percent invalid: sum = {sum_percent_components*100:.2f}%")
 
   def average_molar_mass_calc(self) -> float:
