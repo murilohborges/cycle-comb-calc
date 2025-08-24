@@ -32,7 +32,8 @@ class SubstanceRepository:
       Substance.id,
       Substance.name,
       Substance.molar_mass,
-      Substance.lower_calorific_value
+      Substance.lower_calorific_value,
+      Substance.formula
     )
     result = self.session.exec(statement).all()
 
@@ -41,8 +42,9 @@ class SubstanceRepository:
       name: {
         "id": id_,
         "molar_mass": molar_mass,
-        "lower_calorific_value": lower_calorific_value
+        "lower_calorific_value": lower_calorific_value,
+        "formula": formula
       }
-      for id_, name, molar_mass, lower_calorific_value in result
+      for id_, name, molar_mass, lower_calorific_value, formula in result
     }
   
