@@ -1,6 +1,5 @@
 import re
 
-
 class Reactions:
   """
   Service class to calculate the estequiometria of reaction in gas fuel.
@@ -22,7 +21,7 @@ class Reactions:
 
   def molar_flow_stoichiometric_calc(self):
     """
-    Calculation of molar flow of reagents and products.
+    Calculation of molar flow of reagents and products in kmol/h.
     """
     oxygen_stoichiometric = 0
     carbon_dioxide_stoichiometric = 0
