@@ -1,6 +1,8 @@
 from collections import namedtuple
 from ..equipments.gas_turbine import GasTurbine
 from ..chemistry.gas_fuel import GasFuel
+from ...repositories.repositories_container import RepositoriesContainer
+from ..thermodynamics.steam.saturation_parameters import SaturationParameters
 
 # Tuple test
 FullCyclesResult = namedtuple("FullCyclesResult", [
@@ -23,54 +25,35 @@ FullCyclesInput = namedtuple("FullCyclesInput", [
     "chimney_gas_temperature", "purge_level", "high_steam_level_pressure",
     "medium_steam_level_pressure", "low_steam_level_pressure", "high_steam_level_temperature", "medium_steam_level_temperature", "low_steam_level_temperature", "high_steam_level_fraction", "medium_steam_level_fraction", "high_steam_level_efficiency", "medium_steam_level_efficiency", "low_steam_level_efficiency", "reductor_generator_set_efficiency", "pump_efficiency", "engine_pump_efficiency", "power_factor_pump_efficiency", "condenser_operation_pressure", "range_temperature_cooling_tower"
 ])
-general_input = FullCyclesInput(
-    methane_molar_fraction_fuel=87.08,
-    ethane_molar_fraction_fuel=7.83,
-    propane_molar_fraction_fuel=2.94,
-    butane_molar_fraction_fuel=0,
-    water_molar_fraction_fuel=0,
-    carbon_dioxide_molar_fraction_fuel=0.68,
-    hydrogen_molar_fraction_fuel=0,
-    nitrogen_molar_fraction_fuel=1.47,
-    fuel_mass_flow=53064,
-    fuel_input_temperature=25,
-    air_input_temperature=25,
-    percent_excess_air=164.15,
-    local_atmospheric_pressure=1,
-    relative_humity=60,
-    gas_turbine_efficiency=36.78,
-    chimney_gas_temperature=99.7,
-    purge_level=0,
-    high_steam_level_pressure=98.8,
-    high_steam_level_temperature=565,
-    high_steam_level_fraction=70,
-    medium_steam_level_pressure=24,
-    medium_steam_level_temperature=565,
-    medium_steam_level_fraction=15,
-    low_steam_level_pressure=4,
-    low_steam_level_temperature=312.5,
-    high_steam_level_efficiency=87,
-    medium_steam_level_efficiency=91,
-    low_steam_level_efficiency=89,
-    reductor_generator_set_efficiency=98.5,
-    pump_efficiency=75,
-    engine_pump_efficiency=82.5,
-    power_factor_pump_efficiency=0.84,
-    condenser_operation_pressure=0.074,
-    range_temperature_cooling_tower=10
-  )
 
 
 class FullCycles:
-  def __init__(self, input, db):
-    self.gas_turbine = GasTurbine(input, db)
-    self.gas_fuel = GasFuel(input, db)
+  def __init__(self, input, repositories: RepositoriesContainer):
+    self.gas_fuel = GasFuel(
+      input, 
+      substance_repo=repositories.substance_repository,
+      icph_repo=repositories.icph_repository
+    )
+    self.gas_turbine = GasTurbine(
+      input,
+      gas_fuel=self.gas_fuel,
+      substance_repo=repositories.substance_repository,
+      icph_repo=repositories.icph_repository
+    )
   
   def create_full_cycles_combined(self):
-    LHV_fuel = round(self.gas_fuel.LHV_fuel_calc(), 2)
-
+    """
+    Orchestrator of all calculation in Cycles Combined
+    """
+    # All logic of Gas Turbine
+    LHV_fuel = self.gas_fuel.LHV_fuel_calc()
+    net_power_gas_turbine = self.gas_turbine.net_power_GT_calculation()
+    air_mass_flow = self.gas_turbine.input_air_mass_flow()
+    # print(f"tsat")
+    
+    
     result_of_cycles = FullCyclesResult(
-      LHV_fuel,
+      LHV_fuel= round(LHV_fuel, 2),
       air_mass_flow=1.0,
       exhaustion_gas_tempature=1.0,
       exhaustion_gas_mass_flow=1.0,
@@ -83,7 +66,7 @@ class FullCycles:
       medium_steam_mass_flow=1.0,
       low_steam_mass_flow=1.0,
       pump_variation_pressure=1.0,
-      net_power_gas_turbine=1.0,
+      net_power_gas_turbine= round(net_power_gas_turbine, 2),
       gross_power_steam_turbine=1.0,
       net_power_steam_turbine=1.0,
       power_consumed_pump=1.0,
