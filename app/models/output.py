@@ -7,7 +7,7 @@ class Output(BaseModel):
   # Gas turbine (Brayton Cycle)
   LHV_fuel: float = Field(..., gt=0)
   air_mass_flow: float = Field(..., gt=0)
-  exhaustion_gas_tempature: float = Field(..., gt=0)
+  exhaustion_gas_temperature: float = Field(..., gt=0)
   exhaustion_gas_mass_flow: float = Field(..., gt=0)
 
   # Condenser (Rankine Cycle)
