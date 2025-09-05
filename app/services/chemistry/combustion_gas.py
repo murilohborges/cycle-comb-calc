@@ -44,7 +44,7 @@ class CombustionGas:
 
     return weighted_params
   
-  def gas_combustion_data_calc(self, stoichiometric_flow, input_air, gas_fuel_molar_mass):
+  def combustion_gas_data_calc(self, stoichiometric_flow, input_air, gas_fuel_molar_mass):
     """ Calculation of properties of combustion gas"""
     # Calculating water from gas fuel
     gas_fuel_molar_flow = self.input.fuel_mass_flow/gas_fuel_molar_mass
