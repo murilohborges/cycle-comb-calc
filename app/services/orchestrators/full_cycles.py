@@ -6,7 +6,7 @@ from ..thermodynamics.steam.saturation_parameters import SaturationParameters
 
 # Tuple test
 FullCyclesResult = namedtuple("FullCyclesResult", [
-    "LHV_fuel", "air_mass_flow", "exhaustion_gas_tempature",
+    "LHV_fuel", "air_mass_flow", "exhaustion_gas_temperature",
     "exhaustion_gas_mass_flow", "thermal_charge", "saturated_water_mass_flow",
     "make_up_water_mass_flow", "cooling_water_mass_flow", "quality_exhaustion_steam_turbine",
     "high_steam_mass_flow", "medium_steam_mass_flow", "low_steam_mass_flow",
@@ -48,15 +48,16 @@ class FullCycles:
     # All logic of Gas Turbine
     LHV_fuel = self.gas_fuel.LHV_fuel_calc()
     net_power_gas_turbine = self.gas_turbine.net_power_GT_calculation()
-    air_mass_flow = self.gas_turbine.input_air_mass_flow()
+    input_air_porperties = self.gas_turbine.input_air_properties()
+    combustion_gas_properties = self.gas_turbine.combustion_gas_properties()
     # print(f"tsat")
     
     
     result_of_cycles = FullCyclesResult(
-      LHV_fuel= round(LHV_fuel, 2),
-      air_mass_flow=1.0,
-      exhaustion_gas_tempature=1.0,
-      exhaustion_gas_mass_flow=1.0,
+      LHV_fuel = round(LHV_fuel, 2),
+      air_mass_flow = round(input_air_porperties["mass_flow"], 2),
+      exhaustion_gas_temperature=1.0,
+      exhaustion_gas_mass_flow=round(combustion_gas_properties["mass_flow"] ,2),
       thermal_charge=1.0,
       saturated_water_mass_flow=1.0,
       make_up_water_mass_flow=1.0,
