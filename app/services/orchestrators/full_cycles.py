@@ -30,7 +30,7 @@ FullCyclesInput = namedtuple("FullCyclesInput", [
 class FullCycles:
   def __init__(self, input, repositories: RepositoriesContainer):
     self.gas_fuel = GasFuel(
-      input, 
+      input,
       substance_repo=repositories.substance_repository,
       icph_repo=repositories.icph_repository
     )
@@ -40,7 +40,7 @@ class FullCycles:
       substance_repo=repositories.substance_repository,
       icph_repo=repositories.icph_repository
     )
-  
+
   def create_full_cycles_combined(self):
     """
     Orchestrator of all calculation in Cycles Combined
@@ -50,14 +50,15 @@ class FullCycles:
     net_power_gas_turbine = self.gas_turbine.net_power_GT_calculation()
     input_air_porperties = self.gas_turbine.input_air_properties()
     combustion_gas_properties = self.gas_turbine.combustion_gas_properties()
+    exhaustion_gas_temperature = self.gas_turbine.exhaustion_gas_temp()
     # print(f"tsat")
-    
-    
+
+
     result_of_cycles = FullCyclesResult(
       LHV_fuel = round(LHV_fuel, 2),
       air_mass_flow = round(input_air_porperties["mass_flow"], 2),
-      exhaustion_gas_temperature=1.0,
-      exhaustion_gas_mass_flow=round(combustion_gas_properties["mass_flow"] ,2),
+      exhaustion_gas_temperature = round(exhaustion_gas_temperature, 2),
+      exhaustion_gas_mass_flow = round(combustion_gas_properties["mass_flow"] ,2),
       thermal_charge=1.0,
       saturated_water_mass_flow=1.0,
       make_up_water_mass_flow=1.0,
