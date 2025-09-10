@@ -6,6 +6,7 @@ from ..thermodynamics.psychrometry.humidity import Humidity
 from ..thermodynamics.steam.saturation_parameters import SaturationParameters
 
 class GasTurbine:
+  """Service class of all methods and calculations related to gas turbine"""
   def __init__(self, input, gas_fuel, substance_repo, icph_repo):
     self.input = input
     self.gas_fuel = gas_fuel
