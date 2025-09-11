@@ -1,6 +1,6 @@
 import pytest
 from app.services.equipments.gas_turbine import GasTurbine
-
+from app.services.configs.gas_turbine_config import GasTurbineConfig
 
 # ---------- Fakes for dependencies ----------
 
@@ -73,14 +73,34 @@ class FakeIcphRepo:
 # ---------- Main fixture ----------
 @pytest.fixture
 def gas_turbine():
-    gt = GasTurbine(FakeInput(), FakeGasFuel(), FakeSubstanceRepo(), FakeIcphRepo())
-    gt.icph = FakeICPH()
-    gt.reactions = FakeReactions()
-    gt.input_air = FakeInputAir()
-    gt.combustion_gas = FakeCombustionGas()
-    gt.humidity = FakeHumidity()
-    gt.saturation_parameters = FakeSaturation()
-    return gt
+  # Creates all fake instances
+  fake_input = FakeInput()
+  fake_gas_fuel = FakeGasFuel()
+  fake_icph = FakeICPH()
+  fake_reactions = FakeReactions()
+  fake_input_air = FakeInputAir()
+  fake_combustion_gas = FakeCombustionGas()
+  fake_humidity = FakeHumidity()
+  fake_saturation = FakeSaturation()
+  fake_substance_repo = FakeSubstanceRepo()
+  fake_icph_repo = FakeIcphRepo()
+
+  # Build the config
+  config = GasTurbineConfig(
+    input=fake_input,
+    gas_fuel=fake_gas_fuel,
+    icph=fake_icph,
+    substance_repo=fake_substance_repo,
+    icph_repo=fake_icph_repo,
+    reactions=fake_reactions,
+    input_air=fake_input_air,
+    combustion_gas=fake_combustion_gas,
+    humidity=fake_humidity,
+    saturation_parameters=fake_saturation
+  )
+
+  # Instancia o GasTurbine com a config
+  return GasTurbine(config)
 
 # ---------- TESTS ----------
 
