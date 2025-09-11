@@ -7,17 +7,18 @@ from ..thermodynamics.steam.saturation_parameters import SaturationParameters
 
 class GasTurbine:
   """Service class of all methods and calculations related to gas turbine"""
-  def __init__(self, input, gas_fuel, substance_repo, icph_repo):
-    self.input = input
-    self.gas_fuel = gas_fuel
-    self.icph = ICPH()
-    self.substance_repo = substance_repo
-    self.icph_repo = icph_repo
-    self.reactions = Reactions(self.input, self.gas_fuel.fractions, self.gas_fuel.average_molar_mass_calc(), self.substance_repo)
-    self.input_air = InputAir(self.input, substance_repo, icph_repo)
-    self.combustion_gas = CombustionGas(self.input, substance_repo, icph_repo)
-    self.humidity = Humidity()
-    self.saturation_parameters = SaturationParameters()
+  def __init__(self, config):
+    self.config = config
+    self.input = config.input
+    self.gas_fuel = config.gas_fuel
+    self.icph = config.icph
+    self.substance_repo = config.substance_repo
+    self.icph_repo = config.icph_repo
+    self.reactions = config.reactions
+    self.input_air = config.input_air
+    self.combustion_gas = config.combustion_gas
+    self.humidity = config.humidity
+    self.saturation_parameters = config.saturation_parameters
 
   def net_power_GT_calculation(self):
     """
