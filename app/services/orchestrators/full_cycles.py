@@ -1,8 +1,6 @@
 from collections import namedtuple
-from ..equipments.gas_turbine import GasTurbine
-from ..chemistry.gas_fuel import GasFuel
 from ...repositories.repositories_container import RepositoriesContainer
-from ..thermodynamics.steam.saturation_parameters import SaturationParameters
+from .brayton_cycle import BraytonCycle
 
 # Tuple test
 FullCyclesResult = namedtuple("FullCyclesResult", [
@@ -29,29 +27,26 @@ FullCyclesInput = namedtuple("FullCyclesInput", [
 
 class FullCycles:
   def __init__(self, input, repositories: RepositoriesContainer):
-    self.gas_fuel = GasFuel(
-      input,
-      substance_repo=repositories.substance_repository,
-      icph_repo=repositories.icph_repository
-    )
-    self.gas_turbine = GasTurbine(
-      input,
-      gas_fuel=self.gas_fuel,
-      substance_repo=repositories.substance_repository,
-      icph_repo=repositories.icph_repository
-    )
+    self.input = input
+    self.substance_repo = repositories.substance_repository
+    self.icph_repo = repositories.icph_repository
+    self.brayton_cycle = BraytonCycle(self.input, self.substance_repo, self.icph_repo)
 
   def create_full_cycles_combined(self):
     """
     Orchestrator of all calculation in Cycles Combined
     """
-    # All logic of Gas Turbine
-    LHV_fuel = self.gas_fuel.LHV_fuel_calc()
-    net_power_gas_turbine = self.gas_turbine.net_power_GT_calculation()
-    input_air_porperties = self.gas_turbine.input_air_properties()
-    combustion_gas_properties = self.gas_turbine.combustion_gas_properties()
-    exhaustion_gas_temperature = self.gas_turbine.exhaustion_gas_temp()
+    # All logic of Brayton Cycles
+    brayton_cycle_data = self.brayton_cycle.run()
+    LHV_fuel = brayton_cycle_data["LHV_fuel"]
+    net_power_gas_turbine = brayton_cycle_data["net_power"]
+    input_air_porperties = brayton_cycle_data["input_air"]
+    combustion_gas_properties = brayton_cycle_data["combustion_gas"]
+    exhaustion_gas_temperature = brayton_cycle_data["exhaustion_temp"]
     # print(f"tsat")
+
+    # All logic of HRSG
+    
 
 
     result_of_cycles = FullCyclesResult(
