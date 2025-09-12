@@ -1,6 +1,7 @@
 from collections import namedtuple
 from ...repositories.repositories_container import RepositoriesContainer
 from .brayton_cycle import BraytonCycle
+from .rankine_cycle import RankineCycle
 
 # Tuple test
 FullCyclesResult = namedtuple("FullCyclesResult", [
@@ -31,21 +32,22 @@ class FullCycles:
     self.substance_repo = repositories.substance_repository
     self.icph_repo = repositories.icph_repository
     self.brayton_cycle = BraytonCycle(self.input, self.substance_repo, self.icph_repo)
+    self.rankine_cycle = RankineCycle(self.input, self.substance_repo, self.icph_repo)
 
   def create_full_cycles_combined(self):
     """
     Orchestrator of all calculation in Cycles Combined
     """
-    # All logic of Brayton Cycles
+    # All logic of Brayton Cycle
     brayton_cycle_data = self.brayton_cycle.run()
     LHV_fuel = brayton_cycle_data["LHV_fuel"]
     net_power_gas_turbine = brayton_cycle_data["net_power"]
     input_air_porperties = brayton_cycle_data["input_air"]
     combustion_gas_properties = brayton_cycle_data["combustion_gas"]
     exhaustion_gas_temperature = brayton_cycle_data["exhaustion_temp"]
-    # print(f"tsat")
 
-    # All logic of HRSG
+    # All logic of Rankine Cycle
+    rankine_cycle_data = self.rankine_cycle.HRSG_calc()
     
 
 
