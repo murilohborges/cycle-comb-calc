@@ -50,9 +50,9 @@ class SaturationParameters:
 
   def saturation_factor(self, saturation_temp, A, B, C, D, E1, E2, E3, E4, E5, E6, E7):
     """Calculation of the saturation factor (dimensionless) from the saturation temperature and other parameters.
-    According to the property to be calculated (enthalpy, entropy and others)
+    According to the property to be calculated (enthalpy, entropy and others).
+    The saturation_temp is param in Kelvin
     """
-    saturation_temp = saturation_temp + 273.15
     Tcr = 647.3
     Tc = (Tcr - saturation_temp) / Tcr
 
