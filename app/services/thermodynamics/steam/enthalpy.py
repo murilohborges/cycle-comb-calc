@@ -6,6 +6,9 @@ class Enthalpy:
     """Calculate enthalpy of saturated liquid in kJ/kg"""
     saturation_temperature = saturation_parameters.saturation_temperature(pressure)
 
+    # Converting saturation temperature to Kelvin
+    saturation_temperature += 273.15
+
     critical_point_enthalpy = 0
     A = 0
     B = 0
