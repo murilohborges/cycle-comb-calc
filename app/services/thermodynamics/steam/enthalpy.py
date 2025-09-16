@@ -61,7 +61,7 @@ class Enthalpy:
       E5 = 0
       E6 = 0
       E7 = 0
-    if saturation_temperature < 273.16 and saturation_temperature > 647.3:
+    if saturation_temperature < 273.16 or saturation_temperature > 647.3:
       raise ValueError(f"Pressure invalid: out of the range")
 
     result = saturation_parameters.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_enthalpy
