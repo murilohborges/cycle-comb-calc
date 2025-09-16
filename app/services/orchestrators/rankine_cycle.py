@@ -1,5 +1,6 @@
 from ..thermodynamics.steam.enthalpy import Enthalpy
 from ..thermodynamics.steam.entropy import Entropy
+from ..thermodynamics.steam.specific_volume import SpecificVolume
 from ..thermodynamics.steam.saturation_parameters import SaturationParameters
 from ..equipments.HRSG import HRSG
 from ..equipments.high_steam_turbine import HighSteamTurbine
@@ -12,12 +13,13 @@ class RankineCycle:
     self.icph_repo = icph_repo
     self.enthalpy = Enthalpy()
     self.entropy = Entropy()
+    self.specific_volume = SpecificVolume()
     self.hrsg = HRSG()
     self.saturation_parameters = SaturationParameters()
     self.high_steam_turbine = HighSteamTurbine()
   
   def HRSG_calc(self):
     """Calculating operation conditions and properties of HRSG"""
-    hrsg_params = self.hrsg.get_params_operation(self.enthalpy, self.entropy, self.saturation_parameters)
+    hrsg_params = self.hrsg.get_params_operation(self.enthalpy, self.entropy, self.specific_volume, self.saturation_parameters)
     return
   
