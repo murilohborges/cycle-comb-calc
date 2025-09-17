@@ -1,7 +1,7 @@
 import pytest
 import math
 from unittest.mock import Mock
-from app.services.thermodynamics.steam.entropy import Entropy  # assuming the file is named entropy.py
+from app.services.thermodynamics.steam.entropy import Entropy
 
 
 @pytest.fixture
