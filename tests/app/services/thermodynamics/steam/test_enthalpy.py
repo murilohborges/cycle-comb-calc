@@ -6,12 +6,12 @@ from app.services.thermodynamics.steam.enthalpy import Enthalpy
 
 @pytest.fixture
 def mock_saturation_parameters():
-    mock = Mock()
-    # by default, it returns 100 °C (373.15 K) as the saturation temperature
-    mock.saturation_temperature.return_value = 100  
-    # default factor returns 1 for simplicity
-    mock.saturation_factor.return_value = 1  
-    return mock
+  mock = Mock()
+  # by default, it returns 100 °C (373.15 K) as the saturation temperature
+  mock.saturation_temperature.return_value = 100  
+  # default factor returns 1 for simplicity
+  mock.saturation_factor.return_value = 1  
+  return mock
 
 
 class TestEnthalpy:
