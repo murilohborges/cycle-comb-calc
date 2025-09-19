@@ -47,7 +47,7 @@ class FullCycles:
     exhaustion_gas_temperature = brayton_cycle_data["exhaustion_temp"]
 
     # All logic of Rankine Cycle
-    rankine_cycle_data = self.rankine_cycle.HRSG_calc()
+    rankine_cycle_data = self.rankine_cycle.run(brayton_cycle_data)
     
 
 
