@@ -32,7 +32,6 @@ class FullCycles:
     self.substance_repo = repositories.substance_repository
     self.icph_repo = repositories.icph_repository
     self.brayton_cycle = BraytonCycle(self.input, self.substance_repo, self.icph_repo)
-    self.rankine_cycle = RankineCycle(self.input, self.substance_repo, self.icph_repo)
 
   def create_full_cycles_combined(self):
     """
@@ -47,24 +46,24 @@ class FullCycles:
     exhaustion_gas_temperature = brayton_cycle_data["exhaustion_temp"]
 
     # All logic of Rankine Cycle
-    rankine_cycle_data = self.rankine_cycle.run(brayton_cycle_data)
-    
-
+    rankine_cycle_data = RankineCycle(self.input, self.substance_repo, self.icph_repo, heat_suplier_cycle=brayton_cycle_data).run()
+    hrsg_data = rankine_cycle_data["hrsg_data"]
+    pump_data = rankine_cycle_data["pump_data"]
 
     result_of_cycles = FullCyclesResult(
       LHV_fuel = round(LHV_fuel, 2),
       air_mass_flow = round(input_air_porperties["mass_flow"], 2),
       exhaustion_gas_temperature = round(exhaustion_gas_temperature, 2),
-      exhaustion_gas_mass_flow = round(combustion_gas_properties["mass_flow"] ,2),
+      exhaustion_gas_mass_flow = round(combustion_gas_properties["mass_flow"], 2),
       thermal_charge=1.0,
       saturated_water_mass_flow=1.0,
       make_up_water_mass_flow=1.0,
       cooling_water_mass_flow=1.0,
       quality_exhaustion_steam_turbine=1.0,
-      high_steam_mass_flow=1.0,
-      medium_steam_mass_flow=1.0,
-      low_steam_mass_flow=1.0,
-      pump_variation_pressure=1.0,
+      high_steam_mass_flow = round(hrsg_data["mass_flows"]["high_steam"], 2),
+      medium_steam_mass_flow = round(hrsg_data["mass_flows"]["medium_steam"], 2),
+      low_steam_mass_flow = round(hrsg_data["mass_flows"]["low_steam"], 2),
+      pump_variation_pressure = round(pump_data["params_operation"]["delta_pressure"], 2),
       net_power_gas_turbine= round(net_power_gas_turbine, 2),
       gross_power_steam_turbine=1.0,
       net_power_steam_turbine=1.0,
