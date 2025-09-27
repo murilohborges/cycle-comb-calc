@@ -1,7 +1,7 @@
 class SecantMethod():
   """Service class to calculate the computational routine of iteration by the Secant method.
   Utilized for the calculation of outlet temperature in isenthalpic and isentropic process"""
-  def run(self, inlet_entropy, thermo_property_function, outlet_pressure, saturation_parameters):
+  def run(self, inlet_property, thermo_property_function, outlet_pressure, saturation_parameters):
     """Calculation of the root of function"""
     maximum_iterations = 100
     i = 0
@@ -15,8 +15,8 @@ class SecantMethod():
     while tolerance > 0.01 and i < maximum_iterations:
       
       # Calculating difference between inlet entropy (constant) and outlet entropy (iteration value) that must be zero (isentropic process)
-      difference_Tn = abs(inlet_entropy - thermo_property_function.overheated_steam(outlet_pressure, Tn, saturation_parameters))
-      difference_T0n = abs(inlet_entropy - thermo_property_function.overheated_steam(outlet_pressure, T0n, saturation_parameters))
+      difference_Tn = abs(inlet_property - thermo_property_function.overheated_steam(outlet_pressure, Tn, saturation_parameters))
+      difference_T0n = abs(inlet_property - thermo_property_function.overheated_steam(outlet_pressure, T0n, saturation_parameters))
       
       # Calculation of the iteration
       T2n = Tn - difference_Tn * ((Tn - T0n) / (difference_Tn - difference_T0n))
