@@ -49,6 +49,7 @@ class FullCycles:
     rankine_cycle_data = RankineCycle(self.input, self.substance_repo, self.icph_repo, heat_suplier_cycle=brayton_cycle_data).run()
     hrsg_data = rankine_cycle_data["hrsg_data"]
     pump_data = rankine_cycle_data["pump_data"]
+    steam_turbine_data = rankine_cycle_data["steam_turbine_data"]
 
     result_of_cycles = FullCyclesResult(
       LHV_fuel = round(LHV_fuel, 2),
@@ -59,7 +60,7 @@ class FullCycles:
       saturated_water_mass_flow=1.0,
       make_up_water_mass_flow=1.0,
       cooling_water_mass_flow=1.0,
-      quality_exhaustion_steam_turbine=1.0,
+      quality_exhaustion_steam_turbine = round(steam_turbine_data["low_steam_turbine_params"]["real_quality_outlet_steam"], 2),
       high_steam_mass_flow = round(hrsg_data["mass_flows"]["high_steam"], 2),
       medium_steam_mass_flow = round(hrsg_data["mass_flows"]["medium_steam"], 2),
       low_steam_mass_flow = round(hrsg_data["mass_flows"]["low_steam"], 2),
