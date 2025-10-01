@@ -32,5 +32,5 @@ class Output(BaseModel):
   net_power_cycle_combined: float = Field(..., gt=0)
 
   # Efficiencies of Cycle Combined
-  gross_cycle_combined: float = Field(..., gt=0, le=100)
-  net_cycle_combined: float = Field(..., gt=0, le=100)
+  gross_cycle_combined_efficiency: float = Field(..., gt=0, le=100)
+  net_cycle_combined_efficiency: float = Field(..., gt=0, le=100)
