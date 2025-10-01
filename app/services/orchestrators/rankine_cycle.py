@@ -7,6 +7,7 @@ from ..equipments.HRSG import HRSG
 from ..equipments.high_steam_turbine import HighSteamTurbine
 from ..equipments.medium_steam_turbine import MediumSteamTurbine
 from ..equipments.low_steam_turbine import LowSteamTurbine
+from ..equipments.condenser import Condenser
 from ..equipments.pump import Pump
 from ..utils.secant_method import SecantMethod
 
@@ -27,6 +28,7 @@ class RankineCycle:
     self.medium_steam_turbine = MediumSteamTurbine()
     self.low_steam_turbine = LowSteamTurbine()
     self.pump = Pump()
+    self.condenser = Condenser()
     self.secant_method = SecantMethod()
   
   def hrsg_and_steam_turbine(self):
@@ -62,13 +64,17 @@ class RankineCycle:
     }
   
   def condenser_calc(self):
-    return
+    """Calculation of operation params of Condenser"""
+    params_operation = self.condenser.get_params_operation(self.input, self.substance_repo, self.enthalpy, self.saturation_parameters, self.hrsg_and_steam_turbine())
+    return params_operation
   
   def pump_calc(self):
+    """Calculation of operation params of Pump"""
     params_operation = self.pump.get_params_operation(self.input, self.enthalpy, self.specific_volume, self.saturation_parameters)
     return {
       "params_operation": params_operation
     }
+  
   
   def run(self):
     """Executing all logic sequence of calculation of Rankine Cycle"""
@@ -80,9 +86,11 @@ class RankineCycle:
     pump_data = self.pump_calc()
 
     # Getting Condenser data
-    
+    condenser_data = self.condenser_calc()
+
     return {
       "hrsg_data": hrsg_data,
       "steam_turbine_data": steam_turbine_data,
-      "pump_data": pump_data
+      "pump_data": pump_data,
+      "condenser_data": condenser_data
     }
