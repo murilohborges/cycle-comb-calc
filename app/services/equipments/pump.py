@@ -15,7 +15,11 @@ class Pump:
     # Outlet real enthalpy by pump efficency and converting from J/kg to kJ/kg
     outlet_real_enthalpy = ((specific_volume.saturated_liquid(inlet_pressure, saturation_params) * delta_pressure * 0.001) / (input.pump_efficiency / 100)) + inlet_real_enthalpy
 
+    # Calculating the specific enthalpic change of the pump
+    delta_specific_enthalpy = outlet_real_enthalpy - inlet_real_enthalpy
+
     return {
       "outlet_real_enthalpy": outlet_real_enthalpy,
-      "delta_pressure": delta_pressure / 100000 # in bar
+      "delta_pressure": delta_pressure / 100000, # in bar
+      "delta_specific_enthalpy": delta_specific_enthalpy # in kJ/kg
     }
