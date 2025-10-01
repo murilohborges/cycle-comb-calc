@@ -62,7 +62,7 @@ class HRSG:
 
     # ---Mass balance equation---
     # Coefficent of Steam total generated is just 1
-    steam_coefficient_mass_balance = 1
+    steam_coefficient_mass_balance = 1 + purge_fraction
 
     # Coefficent of boiler feed water is -1 too to equal steam total value
     feed_water_coefficient_mass_balance = -1
