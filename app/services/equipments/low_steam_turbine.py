@@ -41,7 +41,6 @@ class LowSteamTurbine:
     delta_enthalpy_real = delta_enthalpy_isentropic * (efficiency / 100)
     outlet_enthalpy_real = inlet_enthalpy + delta_enthalpy_real
     real_quality_outlet_steam = (outlet_enthalpy_real - liquid_saturated_outlet_enthalpy) / (steam_saturated_outlet_enthalpy - liquid_saturated_outlet_enthalpy)
-    print(real_quality_outlet_steam)
     
     return {
       "delta_enthalpy_real": delta_enthalpy_real,
