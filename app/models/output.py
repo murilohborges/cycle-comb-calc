@@ -13,7 +13,7 @@ class Output(BaseModel):
   # Condenser (Rankine Cycle)
   thermal_charge: float = Field(..., gt=0)
   saturated_water_mass_flow: float = Field(..., gt=0)
-  make_up_water_mass_flow: float = Field(..., gt=0)
+  make_up_water_mass_flow: float = Field(..., ge=0)
   cooling_water_mass_flow: float = Field(..., gt=0)
   quality_exhaustion_steam_turbine: float = Field(..., gt=0)
 
