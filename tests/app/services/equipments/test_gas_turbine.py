@@ -104,6 +104,13 @@ def gas_turbine():
 
 # ---------- TESTS ----------
 
+# fuel_sensible_heat_calc
+def test_fuel_sensible_heat_calc_valid(gas_turbine):
+  """Testing fuel_sensible_heat_calc method with valid values"""
+  result = gas_turbine.fuel_sensible_heat_calc()
+  assert isinstance(result, (int, float))
+  assert result == 100.0  # mock value in FakeICPH.icph_calc_heat
+
 # net_power_GT_calculation
 def test_net_power_GT_calculation_valid(gas_turbine):
   """Testing net_power_GT_calculation method with valid values"""
