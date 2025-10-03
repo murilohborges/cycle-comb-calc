@@ -39,3 +39,12 @@ class TestICPH:
     icph_params = {"param_A": 1.0, "param_B": 1.0, "param_C": 1.0, "param_D": 1.0}
     result = icph.icph_calc_heat(icph_params, molar_mass=28.97, temp_in=25, temp_out=100)
     assert result > 0
+
+  def test_icph_molar_mass_zero(self):
+    """
+    Test ICPH heat calculation of gas fuel with molar mass equal zero (invalid value).
+    """
+    icph = ICPH()
+    icph_params = {"param_A": 1.0, "param_B": 1.0, "param_C": 1.0, "param_D": 1.0}
+    with pytest.raises(ValueError):
+      icph.icph_calc_heat(icph_params, molar_mass=0, temp_in=25, temp_out=100)
