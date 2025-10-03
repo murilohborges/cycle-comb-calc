@@ -44,6 +44,7 @@ class BraytonCycle:
   def run(self):
     return {
       "LHV_fuel": self.gas_fuel.LHV_fuel_calc(),
+      "fuel_sensible_heat": self.gas_turbine.fuel_sensible_heat_calc(),
       "net_power": self.gas_turbine.net_power_GT_calculation(),
       "input_air": self.gas_turbine.input_air_properties(),
       "combustion_gas": self.gas_turbine.combustion_gas_properties(),
