@@ -20,6 +20,20 @@ class GasTurbine:
     self.humidity = config.humidity
     self.saturation_parameters = config.saturation_parameters
 
+  def fuel_sensible_heat_calc(self):
+    """
+    Calculation of sensible heat of fuel gas
+    """
+    icph_params_gas_fuel = self.gas_fuel.icph_params_calc()
+    molar_mass_gas_fuel = self.gas_fuel.average_molar_mass_calc()
+    fuel_sensible_heat = self.icph.icph_calc_heat(
+      icph_params_gas_fuel,
+      molar_mass_gas_fuel,
+      self.input.fuel_input_temperature,
+      25
+    )
+    return fuel_sensible_heat
+
   def net_power_GT_calculation(self):
     """
     Calculation of Net Power of Gas Turbine
@@ -27,9 +41,7 @@ class GasTurbine:
     fuel_mass_flow = self.input.fuel_mass_flow
     heat_rate = 3600/(self.input.gas_turbine_efficiency/100)
     LHV_fuel = self.gas_fuel.LHV_fuel_calc()
-    icph_params_gas_fuel = self.gas_fuel.icph_params_calc()
-    molar_mass_gas_fuel = self.gas_fuel.average_molar_mass_calc()
-    heat_fuel_input = self.icph.icph_calc_heat(icph_params_gas_fuel, molar_mass_gas_fuel, self.input.fuel_input_temperature, 25)
+    heat_fuel_input = self.fuel_sensible_heat_calc()
     net_power_GT = (fuel_mass_flow * (LHV_fuel + abs(heat_fuel_input))) / heat_rate
     return net_power_GT
 
@@ -73,7 +85,7 @@ class GasTurbine:
     # Obtaining the sensible heat from the fuel
     icph_params_gas_fuel = self.gas_fuel.icph_params_calc()
     molar_mass_gas_fuel = self.gas_fuel.average_molar_mass_calc()
-    fuel_sensible_heat = self.icph.icph_calc_heat(icph_params_gas_fuel, molar_mass_gas_fuel, self.input.fuel_input_temperature, 25)
+    fuel_sensible_heat = self.fuel_sensible_heat_calc()
 
     # Obtaining the sensible heat from the input air
     icph_params_input_air = input_air["icph_params"]
