@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from .routes import simulation, substances
 from typing import List
+from app.utils.error_handler import register_error_handlers
 import logging
 
 # Show only SQLAlchemy warnings and errors
@@ -12,6 +13,7 @@ app = FastAPI(
   title="Simulator for combined thermodynamic cycles (Brayton-Rankine)")
 app.include_router(simulation.router)
 app.include_router(substances.router)
+register_error_handlers(app)
 
 
 class InfoResponse(BaseModel):
