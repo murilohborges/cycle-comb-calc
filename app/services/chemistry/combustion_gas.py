@@ -1,3 +1,5 @@
+from app.utils.errors import DataValidationError
+
 class CombustionGas:
   """
   Service class to calculate combustion gas properties.
@@ -22,6 +24,10 @@ class CombustionGas:
   def average_molar_mass_calc(self, fractions) -> float:
     """Calculating average molar mass of combustion gas in kmol/kg"""
     db_components = self.substance_repo.get_all()
+
+    if not db_components:
+      raise DataValidationError("Data of components not found")
+
     return sum(
       fractions[name] * db_components[name]["molar_mass"]
       for name in fractions
@@ -32,12 +38,15 @@ class CombustionGas:
     weighted_params = {"param_A": 0, "param_B": 0, "param_C": 0, "param_D": 0}
     db_components = self.substance_repo.get_all()
 
+    if not db_components:
+      raise DataValidationError("Data of components not found")
+
     for substance, fraction in fractions.items():
       substance_id = db_components[substance]["id"]
       icph_params = self.icph_repo.get_by_substance_id(substance_id)
 
       if not icph_params:
-        raise ValueError(f"ICPH params not found for substance_id={substance_id}")
+        raise DataValidationError(f"ICPH params not found for substance_id={substance_id}")
 
       for key in weighted_params:
         weighted_params[key] += fraction * icph_params[key]
