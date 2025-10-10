@@ -1,6 +1,6 @@
 import pytest
 from app.services.chemistry.combustion_gas import CombustionGas
-
+from app.utils.errors import DataValidationError
 
 # ---------- Fakes to simulate the repositories ----------
 class FakeSubstanceRepo:
@@ -105,7 +105,7 @@ def test_icph_params_calc_missing(combustion_gas):
       return None
 
   combustion_gas = CombustionGas(FakeInput(), FakeSubstanceRepo(), EmptyIcphRepo())
-  with pytest.raises(ValueError):
+  with pytest.raises(DataValidationError):
     combustion_gas.icph_params_calc({"oxygen": 1.0})
 
 
