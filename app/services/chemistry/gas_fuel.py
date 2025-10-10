@@ -1,4 +1,4 @@
-from app.utils.errors import LogicConstraintError
+from app.utils.errors import LogicConstraintError, DataValidationError, ThermodynamicError
 
 class GasFuel:
   """
@@ -19,29 +19,38 @@ class GasFuel:
   def _validate_fractions(self):
     """Validate sum of percents of components in gas fuel"""
     sum_percent_components = sum(self.fractions.values())
-    print(sum_percent_components)
     if (sum_percent_components != 1):
       raise LogicConstraintError(f"Percent of components is invalid: sum = {sum_percent_components*100:.2f}%")
 
-  def average_molar_mass_calc(self) -> float:
+  def average_molar_mass_calc(self):
     """Calculating average molar mass of fuel in kmol/kg"""
     db_components = self.substance_repo.get_all()
+
+    if not db_components:
+      raise DataValidationError("Data of components not found")
+    
     return sum(
       self.fractions[name] * db_components[name]["molar_mass"]
       for name in self.fractions
     )
 
-  def LHV_fuel_calc(self) -> float:
+  def LHV_fuel_calc(self):
     """Calculation of PCI of Gas Fuel"""
     # Getting lhv's and molar mass values of each component
     self._validate_fractions()
     db_components = self.substance_repo.get_all()
 
+    if not db_components:
+      raise DataValidationError("Data of components not found, for the lower heating value")
+    
     # Calculating LHV fuel in Joules/mol
     LHV_fuel_joule_per_mol = sum(
       self.fractions[name] * db_components[name]["lower_calorific_value"] 
       for name in self.fractions
     )
+
+    if LHV_fuel_joule_per_mol == 0:
+      raise ThermodynamicError("There are only inert components in gaseous fuel, review its composition")
 
     # Calling average molar mass of fuel in kmol/kg
     avg_molar_mass = self.average_molar_mass_calc()
@@ -55,6 +64,9 @@ class GasFuel:
     """Calculation of ICPH params of Gas Fuel"""
     weighted_params = {"param_A": 0, "param_B": 0, "param_C": 0, "param_D": 0}
     db_components = self.substance_repo.get_all()
+
+    if not db_components:
+      raise DataValidationError("Data of components not found, for the ICPH params")
 
     for substance, fraction in self.fractions.items():
       substance_id = db_components[substance]["id"]
