@@ -1,4 +1,4 @@
-from app.utils.errors import LogicConstraintError, DataValidationError, ThermodynamicError
+from app.utils.errors import LogicConstraintError, NotFoundError, ThermodynamicError
 
 class GasFuel:
   """
@@ -15,7 +15,7 @@ class GasFuel:
         for name, fraction in vars(self.input).items()
         if name.endswith("_molar_fraction_fuel")
       }
-    
+
   def _validate_fractions(self):
     """Validate sum of percents of components in gas fuel"""
     sum_percent_components = sum(self.fractions.values())
@@ -27,8 +27,8 @@ class GasFuel:
     db_components = self.substance_repo.get_all()
 
     if not db_components:
-      raise DataValidationError("Data of components not found")
-    
+      raise NotFoundError("Data of components not found")
+
     return sum(
       self.fractions[name] * db_components[name]["molar_mass"]
       for name in self.fractions
@@ -41,11 +41,11 @@ class GasFuel:
     db_components = self.substance_repo.get_all()
 
     if not db_components:
-      raise DataValidationError("Data of components not found, for the lower heating value")
-    
+      raise NotFoundError("Data of components not found, for the lower heating value")
+
     # Calculating LHV fuel in Joules/mol
     LHV_fuel_joule_per_mol = sum(
-      self.fractions[name] * db_components[name]["lower_calorific_value"] 
+      self.fractions[name] * db_components[name]["lower_calorific_value"]
       for name in self.fractions
     )
 
@@ -66,7 +66,7 @@ class GasFuel:
     db_components = self.substance_repo.get_all()
 
     if not db_components:
-      raise DataValidationError("Data of components not found, for the ICPH params")
+      raise NotFoundError("Data of components not found, for the ICPH params")
 
     for substance, fraction in self.fractions.items():
       substance_id = db_components[substance]["id"]
