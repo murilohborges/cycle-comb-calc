@@ -1,6 +1,6 @@
 import pytest
 from app.services.chemistry.gas_fuel import GasFuel
-from app.utils.errors import LogicConstraintError, ThermodynamicError, DataValidationError
+from app.utils.errors import LogicConstraintError, ThermodynamicError, NotFoundError
 
 # Fixture parametrizada para frações de combustível
 @pytest.fixture(
@@ -31,7 +31,7 @@ class MockSubstanceRepository:
     }
   def get_all(self):
     return self.results
-  
+
 class MockInvalidSubstanceRepository:
   def get_all(self):
     return 0
@@ -78,14 +78,14 @@ class TestGasFuel:
       # incorrect sum (invalid)
       with pytest.raises(LogicConstraintError):
         gas_fuel._validate_fractions()
-  
+
   def test_average_molar_mass(self, mock_input_factory):
     """Testing avarege molar mass calculation"""
     fractions = {"hydrogen_molar_fraction_fuel": 30, "methane_molar_fraction_fuel": 70}
     mock_input = mock_input_factory(**fractions)
     substance_repo_mock = MockSubstanceRepository()
     icph_repo_mock = MockICPHRepository()
-    
+
     gas_fuel = GasFuel(mock_input, substance_repo_mock, icph_repo_mock)
     result = gas_fuel.average_molar_mass_calc()
 
@@ -93,7 +93,7 @@ class TestGasFuel:
     expected_molar_mass = (0.3 * 0.016) + (0.7 * 0.014)
 
     assert result == pytest.approx(expected_molar_mass)
-  
+
   def test_average_molar_mass_invalid_data(self, mock_input_factory):
     """Testing avarege molar mass calculation without components data"""
     fractions = {"hydrogen_molar_fraction_fuel": 30, "methane_molar_fraction_fuel": 70}
@@ -104,7 +104,7 @@ class TestGasFuel:
     gas_fuel = GasFuel(mock_input, substance_repo_mock, icph_repom_mock)
 
     # Checks if Validation Error is raised
-    with pytest.raises(DataValidationError):
+    with pytest.raises(NotFoundError):
       result = gas_fuel.average_molar_mass_calc()
 
 
@@ -126,7 +126,7 @@ class TestGasFuel:
     expected_lhv = expected_lhv_joule_per_mol / expected_molar_mass
 
     assert result == pytest.approx(expected_lhv, rel=1e-2)
-  
+
   def test_lhv_calculation_with_invalid_data(self, mock_input_factory):
     """
     Test LHV calculation with invalid data, with only inerts in composition.
@@ -141,8 +141,8 @@ class TestGasFuel:
     # Checks if the Validation Error is raised
     with pytest.raises(ThermodynamicError):
       service.LHV_fuel_calc()
-    
-  
+
+
   def test_icph_params_calc(self, mock_input_factory):
     """
     Test ICPH params calculation of gas fuel with valid data.
