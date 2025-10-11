@@ -1,5 +1,6 @@
 import pytest
 from app.services.chemistry.reactions import Reactions
+from app.utils.errors import NotFoundError
 
 # Mock for SubstanceRepository
 class MockSubstanceRepository:
@@ -11,6 +12,12 @@ class MockSubstanceRepository:
       "propane": {"formula": "C3H8", "lower_calorific_value": 46000},
       "ZeroLHV": {"formula": "CH4", "lower_calorific_value": 0}
     }
+  def get_all(self):
+    return self.results
+
+class MockInvalidSubstanceRepository:
+  def __init__(self):
+    self.results = 0
   def get_all(self):
     return self.results
 
@@ -54,7 +61,7 @@ class TestReactions:
     assert result["oxygen_stoichiometric"] == pytest.approx(3.5)
     assert result["carbon_dioxide_stoichiometric"] == pytest.approx(2.0)
     assert result["water_stoichiometric"] == pytest.approx(3.0)
-  
+
   def test_mixture_stoichiometry(self, mock_input_factory):
     """Testing molar flows with methane/ethane mixture"""
     input_data = mock_input_factory(fuel_mass_flow=46)  # kg/h
@@ -69,7 +76,7 @@ class TestReactions:
     assert result["oxygen_stoichiometric"] == pytest.approx(5.5)
     assert result["carbon_dioxide_stoichiometric"] == pytest.approx(3.0)
     assert result["water_stoichiometric"] == pytest.approx(5.0)
-  
+
   def test_zero_lhv_ignored(self, mock_input_factory):
     """Testing molar flows with substance without lhv's values"""
     input_data = mock_input_factory(fuel_mass_flow=16)
@@ -84,3 +91,15 @@ class TestReactions:
     assert result["oxygen_stoichiometric"] == 0
     assert result["carbon_dioxide_stoichiometric"] == 0
     assert result["water_stoichiometric"] == 0
+
+  def test_invalid_repo(self, mock_input_factory):
+    """Testing molar flows with invalid data repo"""
+    input_data = mock_input_factory(fuel_mass_flow=16)
+    fuel_fractions = {"ZeroLHV": 1.0}
+    fuel_molar_mass = 16
+    repo = MockInvalidSubstanceRepository()
+    r = Reactions(input_data, fuel_fractions, fuel_molar_mass, repo)
+
+    # Checks if Error Validation is raised
+    with pytest.raises(NotFoundError):
+      r.molar_flow_stoichiometric_calc()
