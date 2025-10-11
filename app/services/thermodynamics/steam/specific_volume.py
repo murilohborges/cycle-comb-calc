@@ -1,14 +1,18 @@
 import math
+from app.services.thermodynamics.steam.saturation_parameters import SaturationParameters
 
 class SpecificVolume:
   """Service class to calculate specific volume property of steam"""
-  def saturated_liquid(self, pressure, saturation_parameters):
+  def __init__(self, saturation_params=None):
+    self.saturation_params = saturation_params or SaturationParameters()
+
+  def saturated_liquid(self, pressure, ):
     """Calculate specific volume of saturated liquid in m³/kg"""
-    saturation_temperature = saturation_parameters.saturation_temperature(pressure)
+    saturation_temperature = self.saturation_params.saturation_temperature(pressure)
 
     # Converting saturation temperature to Kelvin
     saturation_temperature += 273.15
-    
+
     critical_point_specific_volume = 0.003155
     A = 1
     B = -1.9153882
@@ -26,5 +30,5 @@ class SpecificVolume:
       raise ValueError(f"Pressure invalid: out of the range")
 
 
-    result = saturation_parameters.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_specific_volume
+    result = self.saturation_params.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_specific_volume
     return result

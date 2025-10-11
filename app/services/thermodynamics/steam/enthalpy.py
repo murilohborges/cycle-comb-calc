@@ -1,10 +1,14 @@
 import math
+from app.services.thermodynamics.steam.saturation_parameters import SaturationParameters
 
 class Enthalpy:
   """Service class to calculate enthalpy properties of steam"""
-  def saturated_liquid(self, pressure, saturation_parameters):
+  def __init__(self, saturation_params=None):
+    self.saturation_params = saturation_params or SaturationParameters()
+
+  def saturated_liquid(self, pressure):
     """Calculate enthalpy of saturated liquid in kJ/kg"""
-    saturation_temperature = saturation_parameters.saturation_temperature(pressure)
+    saturation_temperature = self.saturation_params.saturation_temperature(pressure)
 
     # Converting saturation temperature to Kelvin
     saturation_temperature += 273.15
@@ -64,12 +68,12 @@ class Enthalpy:
     if saturation_temperature < 273.16 or saturation_temperature > 647.3:
       raise ValueError(f"Pressure invalid: out of the range")
 
-    result = saturation_parameters.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_enthalpy
+    result = self.saturation_params.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_enthalpy
     return result
 
-  def saturated_steam(self, pressure, saturation_parameters):
+  def saturated_steam(self, pressure):
     """Calculate enthalpy of saturated steam in kJ/kg"""
-    saturation_temperature = saturation_parameters.saturation_temperature(pressure)
+    saturation_temperature = self.saturation_params.saturation_temperature(pressure)
 
     # Converting saturation temperature to Kelvin
     saturation_temperature += 273.15
@@ -87,12 +91,12 @@ class Enthalpy:
     E6 = 0
     E7 = 0
 
-    result = saturation_parameters.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_enthalpy
+    result = self.saturation_params.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_enthalpy
     return result
 
-  def overheated_steam(self, pressure, temperature, saturation_parameters):
+  def overheated_steam(self, pressure, temperature):
     """Calculate enthalpy of overheated steam in kJ/kg"""
-    saturation_temperature = saturation_parameters.saturation_temperature(pressure)
+    saturation_temperature = self.saturation_params.saturation_temperature(pressure)
     # Converting temperatures in Kelvin
     temperature += 273.15
     saturation_temperature += 273.15

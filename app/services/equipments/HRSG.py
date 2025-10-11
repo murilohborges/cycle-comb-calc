@@ -11,19 +11,19 @@ class HRSG:
     result = abs(icph.icph_calc_heat(combustion_gas_icph_params, combustion_gas_molar_mass, exhaustion_temp, chimney_gas_temperature) * combustion_gas_mass_flow)
     return result
 
-  def get_params_operation(self, input, enthalpy_calc, saturation_parameters, high_steam_turbine, pump):
+  def get_params_operation(self, input, enthalpy_calc, high_steam_turbine, pump):
     """Calculation of params of operation of HRSG, and from others equipments of Rankine Cycle.
     Like as enthalpy of steam to be reheated and inlet water"""
     # Intern params of HRSG
     # Overheated steams generated
-    high_steam_enthaply = enthalpy_calc.overheated_steam(input.high_steam_level_pressure, input.high_steam_level_temperature, saturation_parameters)
-    medium_steam_enthaply = enthalpy_calc.overheated_steam(input.medium_steam_level_pressure, input.medium_steam_level_temperature, saturation_parameters)
-    low_steam_enthaply = enthalpy_calc.overheated_steam(input.low_steam_level_pressure, input.low_steam_level_temperature, saturation_parameters)
+    high_steam_enthaply = enthalpy_calc.overheated_steam(input.high_steam_level_pressure, input.high_steam_level_temperature)
+    medium_steam_enthaply = enthalpy_calc.overheated_steam(input.medium_steam_level_pressure, input.medium_steam_level_temperature)
+    low_steam_enthaply = enthalpy_calc.overheated_steam(input.low_steam_level_pressure, input.low_steam_level_temperature)
 
     # Saturated liquid of purge
-    high_purge_enthalpy = enthalpy_calc.saturated_liquid(input.high_steam_level_pressure, saturation_parameters)
-    medium_purge_enthalpy = enthalpy_calc.saturated_liquid(input.medium_steam_level_pressure, saturation_parameters)
-    low_purge_enthalpy = enthalpy_calc.saturated_liquid(input.low_steam_level_pressure, saturation_parameters)
+    high_purge_enthalpy = enthalpy_calc.saturated_liquid(input.high_steam_level_pressure)
+    medium_purge_enthalpy = enthalpy_calc.saturated_liquid(input.medium_steam_level_pressure)
+    low_purge_enthalpy = enthalpy_calc.saturated_liquid(input.low_steam_level_pressure)
 
     # Extern params
     medium_steam_cold_enthaply = high_steam_turbine["outlet_enthalpy_real"]
@@ -39,7 +39,7 @@ class HRSG:
       "medium_steam_cold_enthaply": medium_steam_cold_enthaply,
       "inlet_water_enthalpy": inlet_water_enthalpy
     }
-  
+
   def get_mass_flow(self, input, hsrg_params, heat_supplied):
     """Calculation of mass flows in Heat Recovery Steam Generator (Steam generated, purge, boiler feed water) in kg/h"""
     # Getting steams and purge fractions

@@ -15,8 +15,8 @@ class SecantMethod():
     while tolerance > 0.01 and i < maximum_iterations:
 
       # Calculating difference between inlet entropy (constant) and outlet entropy (iteration value) that must be zero (isentropic process)
-      difference_Tn = abs(inlet_property - thermo_property_function.overheated_steam(outlet_pressure, Tn, saturation_parameters))
-      difference_T0n = abs(inlet_property - thermo_property_function.overheated_steam(outlet_pressure, T0n, saturation_parameters))
+      difference_Tn = abs(inlet_property - thermo_property_function.overheated_steam(outlet_pressure, Tn))
+      difference_T0n = abs(inlet_property - thermo_property_function.overheated_steam(outlet_pressure, T0n))
 
       # Avoid division by zero if differences are equal
       if difference_Tn == difference_T0n:

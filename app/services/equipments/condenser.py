@@ -6,7 +6,7 @@ class Condenser:
     # Temperature of Water value for the make-up water in the condenser in Celsius
     self.make_up_temperature_water = 25
 
-  def get_params_operation(self, input, substance_repo, enthalpy, saturation_params, steam_turbine_hrsg_data):
+  def get_params_operation(self, input, substance_repo, enthalpy, steam_turbine_hrsg_data):
     """Calculation of params of operation of condenser"""
     water_molar_mass = substance_repo.get_all()["water"]["molar_mass"]
 
@@ -15,7 +15,7 @@ class Condenser:
     inlet_enthalpy = steam_turbine_hrsg_data["steam_turbine_data"]["low_steam_turbine_params"]["outlet_enthalpy_real"]
     steam_mass_flow = steam_turbine_hrsg_data["hrsg_data"]["mass_flows"]["total_steam_generated"]
     make_up_water_mass_flow = steam_turbine_hrsg_data["hrsg_data"]["mass_flows"]["purge"]
-    outlet_enthalpy = enthalpy.saturated_liquid(operation_pressure, saturation_params)
+    outlet_enthalpy = enthalpy.saturated_liquid(operation_pressure)
     make_up_water_enthalpy = (self.specific_heat_water / water_molar_mass) * self.make_up_temperature_water # In kJ/kg
 
     # ---Mass balance equation---
