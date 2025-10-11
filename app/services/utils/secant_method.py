@@ -1,3 +1,5 @@
+from app.utils.errors import ComputationalError
+
 class SecantMethod():
   """Service class to calculate the computational routine of iteration by the Secant method.
   Utilized for the calculation of outlet temperature in isenthalpic and isentropic process"""
@@ -20,7 +22,7 @@ class SecantMethod():
 
       # Avoid division by zero if differences are equal
       if difference_Tn == difference_T0n:
-        raise ValueError("Secant method failed: no variation between iterations (possible flat function)")
+        raise ComputationalError("Secant method failed: no variation between iterations (possible flat function)")
 
       # Calculation of the iteration
       T2n = Tn - difference_Tn * ((Tn - T0n) / (difference_Tn - difference_T0n))
@@ -34,6 +36,6 @@ class SecantMethod():
       i = i + 1
 
     if i >= maximum_iterations:
-      raise ValueError("Secant method did not converge after maximum iterations")
+      raise ComputationalError("Secant method did not converge after maximum iterations")
 
     return T2n
