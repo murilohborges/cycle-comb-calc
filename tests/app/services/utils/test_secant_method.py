@@ -1,7 +1,7 @@
 import re
 import pytest
 from app.services.utils.secant_method import SecantMethod
-
+from app.utils.errors import ComputationalError
 
 class MockSaturationParameters:
   """Mock that simulates the behavior of the saturation object"""
@@ -54,7 +54,7 @@ def test_secant_method_fails_to_converge():
   expected_message = "Secant method failed: no variation between iterations (possible flat function)"
 
   # we intercept possible divisions by zero or loops without convergence
-  with pytest.raises(ValueError, match=re.escape(expected_message)):
+  with pytest.raises(ComputationalError, match=re.escape(expected_message)):
     secant.run(
       inlet_property=5.0,
       thermo_property_function=bad_thermo,
