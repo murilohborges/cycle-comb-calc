@@ -1,3 +1,5 @@
+from app.utils.errors import NotFoundError
+
 class InputAir:
   """
   Service class to calculate input air's properties.
@@ -6,7 +8,7 @@ class InputAir:
     self.input = input_data
     self.substance_repo = substance_repository
     self.icph_repo = icph_repository
-  
+
   def fraction_molar_calc(self, flows):
     """
     Calculation of molar fractions of input air.
@@ -18,32 +20,39 @@ class InputAir:
         for name, flow in flows.items()
       }
     return fractions
-  
+
   def average_molar_mass_calc(self, fractions) -> float:
     """Calculating average molar mass of input air in kmol/kg"""
     db_components = self.substance_repo.get_all()
+
+    if not db_components:
+      raise NotFoundError("Data of components not found")
+
     return sum(
       fractions[name] * db_components[name]["molar_mass"]
       for name in fractions
     )
-  
+
   def icph_params_calc(self, fractions):
     """Calculating ICPH params of input air"""
     weighted_params = {"param_A": 0, "param_B": 0, "param_C": 0, "param_D": 0}
     db_components = self.substance_repo.get_all()
+
+    if not db_components:
+      raise NotFoundError("Data of components not found")
 
     for substance, fraction in fractions.items():
       substance_id = db_components[substance]["id"]
       icph_params = self.icph_repo.get_by_substance_id(substance_id)
 
       if not icph_params:
-        raise ValueError(f"ICPH params not found for substance_id={substance_id}")
+        raise NotFoundError(f"ICPH params not found for substance_id={substance_id}")
 
       for key in weighted_params:
         weighted_params[key] += fraction * icph_params[key]
 
     return weighted_params
-  
+
   def input_air_data_calc(self, oxygen_stoichiometric, absolute_humidity):
     """Calculation of properties of input air"""
     # Calculation dry air properties
@@ -57,6 +66,9 @@ class InputAir:
 
     # Get water mass molar in repository
     db_components = self.substance_repo.get_all()
+
+    if not db_components:
+      raise NotFoundError("Data of components not found")
 
     # Calculating molar flow of water in atmospheric
     water_input_air = sum(dry_air_molar_flow.values())*dry_air_molar_mass*absolute_humidity*(1/db_components["water"]["molar_mass"])*(1+(self.input.percent_excess_air/100))
