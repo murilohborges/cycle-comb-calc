@@ -1,9 +1,4 @@
-from ..thermodynamics.heat.icph import ICPH
-from ..chemistry.reactions import Reactions
-from ..chemistry.input_air import InputAir
-from ..chemistry.combustion_gas import CombustionGas
-from ..thermodynamics.psychrometry.humidity import Humidity
-from ..thermodynamics.steam.saturation_parameters import SaturationParameters
+from app.utils.errors import ComputationalError
 
 class GasTurbine:
   """Service class of all methods and calculations related to gas turbine"""
@@ -83,8 +78,6 @@ class GasTurbine:
     R = 8.314462618
 
     # Obtaining the sensible heat from the fuel
-    icph_params_gas_fuel = self.gas_fuel.icph_params_calc()
-    molar_mass_gas_fuel = self.gas_fuel.average_molar_mass_calc()
     fuel_sensible_heat = self.fuel_sensible_heat_calc()
 
     # Obtaining the sensible heat from the input air
@@ -99,6 +92,8 @@ class GasTurbine:
     D = combustion_gas["icph_params"]["param_D"]
 
     # Defining parameters for each loop of the iteration, in order to converge to the final temperature
+    maximum_iterations = 100
+    i = 0
     tolerance = 1
     old_temperature = 1
     new_temperature = initial_temperature + 1
@@ -110,7 +105,7 @@ class GasTurbine:
     heat_supplied = ((1 - gas_turbine_efficiency) * (fuel_mass_flow * (LHV_fuel + abs(fuel_sensible_heat)) + air_mass_flow * abs(input_air_sensible_heat))) / (combustion_gas["mass_flow"])
 
     # Looping
-    while tolerance > 0.001:
+    while tolerance > 0.001 and i < maximum_iterations:
       average_specific_heat = R * (A + (B / 2) * initial_temperature * (tau + 1) + (C / 3) * (initial_temperature ** 2) * ((tau ** 2) + tau + 1) + (D / (tau * (initial_temperature ** 2))))
 
       new_temperature = (heat_supplied / (average_specific_heat / combustion_gas_molar_mass)) + initial_temperature
@@ -120,6 +115,9 @@ class GasTurbine:
       old_temperature = new_temperature
 
       tau = new_temperature / initial_temperature
+
+    if i >= maximum_iterations:
+      raise ComputationalError("Iteration method did not converge after maximum iterations")
 
     result = new_temperature - 273.15
 
