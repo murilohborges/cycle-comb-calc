@@ -1,4 +1,4 @@
-from app.utils.errors import DataValidationError
+from app.utils.errors import NotFoundError
 
 class CombustionGas:
   """
@@ -8,7 +8,7 @@ class CombustionGas:
     self.input = input_data
     self.substance_repo = substance_repository
     self.icph_repo = icph_repository
-  
+
   def fraction_molar_calc(self, flows):
     """
     Calculation of molar fractions of combustion gas.
@@ -20,39 +20,39 @@ class CombustionGas:
         for name, flow in flows.items()
       }
     return fractions
-  
+
   def average_molar_mass_calc(self, fractions) -> float:
     """Calculating average molar mass of combustion gas in kmol/kg"""
     db_components = self.substance_repo.get_all()
 
     if not db_components:
-      raise DataValidationError("Data of components not found")
+      raise NotFoundError("Data of components not found")
 
     return sum(
       fractions[name] * db_components[name]["molar_mass"]
       for name in fractions
     )
-  
+
   def icph_params_calc(self, fractions):
     """Calculating ICPH params of gas combustion"""
     weighted_params = {"param_A": 0, "param_B": 0, "param_C": 0, "param_D": 0}
     db_components = self.substance_repo.get_all()
 
     if not db_components:
-      raise DataValidationError("Data of components not found")
+      raise NotFoundError("Data of components not found")
 
     for substance, fraction in fractions.items():
       substance_id = db_components[substance]["id"]
       icph_params = self.icph_repo.get_by_substance_id(substance_id)
 
       if not icph_params:
-        raise DataValidationError(f"ICPH params not found for substance_id={substance_id}")
+        raise NotFoundError(f"ICPH params not found for substance_id={substance_id}")
 
       for key in weighted_params:
         weighted_params[key] += fraction * icph_params[key]
 
     return weighted_params
-  
+
   def combustion_gas_data_calc(self, stoichiometric_flow, input_air, gas_fuel_molar_mass):
     """ Calculation of properties of combustion gas"""
     # Calculating water from gas fuel
@@ -76,7 +76,7 @@ class CombustionGas:
 
     # Calculating total nitrogen of combustion gas
     nitrogen_molar_flow = input_air["molar_flow"]["nitrogen"] + nitrogen_gas_fuel
-    
+
     combustion_gas_molar_flow = {
       "oxygen": oxygen_molar_flow,
       "nitrogen": nitrogen_molar_flow,
