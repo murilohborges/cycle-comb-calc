@@ -1,4 +1,5 @@
 import re
+from app.utils.errors import NotFoundError
 
 class Reactions:
   """
@@ -9,7 +10,7 @@ class Reactions:
     self.fuel_fractions = fuel_fractions
     self.fuel_molar_mass = fuel_molar_mass
     self.substance_repo = substance_repository
-  
+
   def parse_formula(self, formula: str) -> tuple[int, int]:
     """
     Function to obtain number of elements of fuel substance with regex
@@ -30,20 +31,23 @@ class Reactions:
     fuel_molar_flow = self.input.fuel_mass_flow/self.fuel_molar_mass
     db_components = self.substance_repo.get_all()
 
+    if not db_components:
+      raise NotFoundError("Data of components not found")
+
     for substance, fraction in self.fuel_fractions.items():
       substance_formula = db_components[substance]["formula"]
       substance_lhv = db_components[substance]["lower_calorific_value"]
 
       if substance_lhv == 0:
         continue
-      
+
       carbon, hydrogen = self.parse_formula(substance_formula)
-      
+
       # Calculating the stoichiometric coefficient of substances from the number of elements
       CO2_coefficient = int(carbon)
       H2O_coefficient = int(hydrogen)/2
       O2_coefficient = (CO2_coefficient * 2 + H2O_coefficient) / 2
-      
+
       # Calculating oxygen_stoichiometric consumed by substance of fuel
       oxygen_stoichiometric += (fuel_molar_flow * fraction) * O2_coefficient
 
@@ -55,4 +59,4 @@ class Reactions:
       "oxygen_stoichiometric": oxygen_stoichiometric,
       "carbon_dioxide_stoichiometric": carbon_dioxide_stoichiometric,
       "water_stoichiometric": water_stoichiometric
-    } 
+    }
