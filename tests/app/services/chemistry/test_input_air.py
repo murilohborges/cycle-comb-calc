@@ -1,6 +1,6 @@
 import pytest
 from app.services.chemistry.input_air import InputAir
-
+from app.utils.errors import NotFoundError
 
 # ---------- Fakes to simulate the repositories ----------
 class FakeSubstanceRepo:
@@ -10,6 +10,10 @@ class FakeSubstanceRepo:
       "nitrogen": {"id": 2, "molar_mass": 28.0},
       "water": {"id": 3, "molar_mass": 18.0},
     }
+
+class FakeInvalidSubstanceRepo:
+  def get_all(self):
+    return 0
 
 class FakeIcphRepo:
   def get_by_substance_id(self, substance_id):
@@ -81,7 +85,7 @@ def test_icph_params_calc_missing(input_air):
       return None
 
   input_air = InputAir(FakeInput(), FakeSubstanceRepo(), EmptyIcphRepo())
-  with pytest.raises(ValueError):
+  with pytest.raises(NotFoundError):
     input_air.icph_params_calc({"oxygen": 1.0})
 
 
