@@ -15,10 +15,10 @@ class MockThermoPropertyFunction:
   def __init__(self, variation_factor=0.5):
     self.variation_factor = variation_factor
 
-  def overheated_steam(self, pressure, temperature, saturation_parameters):
+  def overheated_steam(self, pressure, temperature):
     # simulated function with simple linear relationship
     # the higher the temperature, the higher the returned value
-    return pressure * 0.1 + (temperature - saturation_parameters.saturation_temperature(pressure)) * self.variation_factor
+    return pressure * 0.1 + (temperature - 2.71) * self.variation_factor
 
 def test_secant_method_converges_successfully():
   """Test secant_method calculation with valid data."""
@@ -45,7 +45,7 @@ def test_secant_method_fails_to_converge():
   mock_saturation = MockSaturationParameters()
 
   class BadThermoFunction:
-    def overheated_steam(self, pressure, temperature, saturation_parameters):
+    def overheated_steam(self, pressure, temperature):
       # Always returns the same value → prevents convergence
       return 1.0
 
@@ -61,4 +61,3 @@ def test_secant_method_fails_to_converge():
       outlet_pressure=10.0,
       saturation_parameters=mock_saturation
     )
-
