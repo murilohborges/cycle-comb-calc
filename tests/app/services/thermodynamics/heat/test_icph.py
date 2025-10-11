@@ -1,5 +1,6 @@
 import pytest
 from app.services.thermodynamics.heat.icph import ICPH
+from app.utils.errors import DataValidationError
 
 class TestICPH:
   def test_icph_heat_calc(self):
@@ -21,7 +22,7 @@ class TestICPH:
     expected = -8.08
 
     assert pytest.approx(result, rel=1e-2) == expected
-  
+
   def test_icph_zero_when_same_temp(self):
     """
     Test ICPH heat calculation of gas fuel with the same temperature in and out.
@@ -46,5 +47,5 @@ class TestICPH:
     """
     icph = ICPH()
     icph_params = {"param_A": 1.0, "param_B": 1.0, "param_C": 1.0, "param_D": 1.0}
-    with pytest.raises(ValueError):
+    with pytest.raises(DataValidationError):
       icph.icph_calc_heat(icph_params, molar_mass=0, temp_in=25, temp_out=100)
