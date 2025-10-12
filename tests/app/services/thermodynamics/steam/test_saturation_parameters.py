@@ -1,6 +1,7 @@
 import pytest
 import math
 from app.services.thermodynamics.steam.saturation_parameters import SaturationParameters
+from app.utils.errors import DataValidationError
 
 class TestSaturationParameters:
 
@@ -29,7 +30,7 @@ class TestSaturationParameters:
 
     def test_saturation_temperature_invalid_pressure(self):
       # Example: pressure out of range
-      with pytest.raises(ValueError):
+      with pytest.raises(DataValidationError):
         self.sp.saturation_temperature(0.0001)
 
     # -------------------------------
@@ -44,9 +45,9 @@ class TestSaturationParameters:
 
     def test_saturation_pressure_invalid_temp(self):
         # Example: temperature out of range
-        with pytest.raises(ValueError):
+        with pytest.raises(DataValidationError):
             self.sp.saturation_pressure(-200)  # fora da faixa
-    
+
     # -------------------------------
     # saturation_factor
     # -------------------------------

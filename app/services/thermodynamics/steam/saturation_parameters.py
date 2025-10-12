@@ -1,4 +1,5 @@
 import math
+from app.utils.errors import DataValidationError
 
 class SaturationParameters:
   """
@@ -19,7 +20,7 @@ class SaturationParameters:
       B = -12587.5
       C = -15.2578
     if pressure < 0.000611 or pressure > 22.1:
-      raise ValueError(f"Pressure invalid: out of the range")
+      raise DataValidationError(f"Pressure invalid: out of the range")
 
     result = (A + (B / (math.log(pressure) + C))) - 273.15
     return result
@@ -28,7 +29,7 @@ class SaturationParameters:
     """Calculation of saturation pressure(bar) from temperature in celsius"""
     temperature = temperature + 273.15
     if temperature < 273.16 or temperature > 647.3:
-      raise ValueError(f"Temperature invalid: out of the range")
+      raise DataValidationError(f"Temperature invalid: out of the range")
     A0 = 10.4592
     A1 = -0.00404897
     A2 = -0.000041752
