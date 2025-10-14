@@ -2,7 +2,7 @@ import pytest
 import math
 from unittest.mock import Mock
 from app.services.thermodynamics.steam.enthalpy import Enthalpy
-
+from app.utils.errors import DataValidationError
 
 @pytest.fixture
 def mock_saturation_parameters():
@@ -31,7 +31,7 @@ class TestEnthalpy:
     mock_saturation_parameters.saturation_temperature.return_value = -300
     enthalpy = Enthalpy(saturation_params=mock_saturation_parameters)
 
-    with pytest.raises(ValueError, match="Pressure invalid: out of the range"):
+    with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       enthalpy.saturated_liquid(pressure=1)
 
   # ---------- TESTS FOR saturated steam ----------
@@ -49,7 +49,7 @@ class TestEnthalpy:
     mock_saturation_parameters.saturation_temperature.return_value = -300
     enthalpy = Enthalpy(saturation_params=mock_saturation_parameters)
 
-    with pytest.raises(ValueError, match="Pressure invalid: out of the range"):
+    with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       enthalpy.saturated_liquid(pressure=1)
 
   # ---------- TESTES PARA overheated_steam ----------
@@ -76,5 +76,5 @@ class TestEnthalpy:
     enthalpy = Enthalpy()
 
     # negative pressure -> may give strange results
-    with pytest.raises(ValueError, match="Pressure invalid: out of the range"):
+    with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       enthalpy.overheated_steam(pressure=-5, temperature=200)

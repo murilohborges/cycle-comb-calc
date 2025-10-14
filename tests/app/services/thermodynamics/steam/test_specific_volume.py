@@ -2,7 +2,7 @@ import pytest
 import math
 from unittest.mock import Mock
 from app.services.thermodynamics.steam.specific_volume import SpecificVolume
-
+from app.utils.errors import DataValidationError
 
 @pytest.fixture
 def mock_saturation_parameters():
@@ -31,5 +31,5 @@ class TestSpecificVolume:
     mock_saturation_parameters.saturation_temperature.return_value = -300
     specific_volume = SpecificVolume(saturation_params=mock_saturation_parameters)
 
-    with pytest.raises(ValueError, match="Pressure invalid: out of the range"):
+    with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       specific_volume.saturated_liquid(pressure=1)

@@ -2,7 +2,7 @@ import pytest
 import math
 from unittest.mock import Mock
 from app.services.thermodynamics.steam.entropy import Entropy
-
+from app.utils.errors import DataValidationError
 
 @pytest.fixture
 def mock_saturation_parameters():
@@ -30,7 +30,7 @@ class TestEntropy:
     mock_saturation_parameters.saturation_temperature.return_value = -300
     entropy = Entropy(saturation_params=mock_saturation_parameters)
 
-    with pytest.raises(ValueError, match="Pressure invalid: out of the range"):
+    with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       entropy.saturated_liquid(pressure=1)
 
   # ---------- TESTS FOR saturated_steam ----------
@@ -48,7 +48,7 @@ class TestEntropy:
     mock_saturation_parameters.saturation_temperature.return_value = -300
     entropy = Entropy(saturation_params=mock_saturation_parameters)
 
-    with pytest.raises(ValueError, match="Pressure invalid: out of the range"):
+    with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       entropy.saturated_liquid(pressure=1)
 
   # ---------- TESTS FOR overheated_steam ----------
@@ -71,11 +71,10 @@ class TestEntropy:
 
     assert isinstance(result, float)
 
-  def test_overheated_steam_invalid_pressure(self, mock_saturation_parameters):
+  def test_overheated_steam_invalid_pressure(self):
     """Test overheated_steam calculation with invalid data."""
-    mock_saturation_parameters.saturation_temperature.return_value = 100
-    entropy = Entropy(saturation_params=mock_saturation_parameters)
+    entropy = Entropy()
 
     # Negative pressure -> math.log() domain error
-    with pytest.raises(ValueError, match="math domain error"):
+    with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       entropy.overheated_steam(pressure=-5, temperature=200)
