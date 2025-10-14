@@ -1,5 +1,6 @@
 import math
 from app.services.thermodynamics.steam.saturation_parameters import SaturationParameters
+from app.utils.errors import DataValidationError
 
 class Enthalpy:
   """Service class to calculate enthalpy properties of steam"""
@@ -66,7 +67,7 @@ class Enthalpy:
       E6 = 0
       E7 = 0
     if saturation_temperature < 273.16 or saturation_temperature > 647.3:
-      raise ValueError(f"Pressure invalid: out of the range")
+      raise DataValidationError(f"Pressure invalid: out of the range")
 
     result = self.saturation_params.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_enthalpy
     return result
@@ -91,12 +92,19 @@ class Enthalpy:
     E6 = 0
     E7 = 0
 
+    if saturation_temperature < 273.16 or saturation_temperature > 647.3:
+      raise DataValidationError(f"Pressure invalid: out of the range")
+
     result = self.saturation_params.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_enthalpy
     return result
 
   def overheated_steam(self, pressure, temperature):
     """Calculate enthalpy of overheated steam in kJ/kg"""
-    saturation_temperature = self.saturation_params.saturation_temperature(pressure)
+    try:
+      saturation_temperature = self.saturation_params.saturation_temperature(pressure)
+    except DataValidationError as e:
+      raise e
+
     # Converting temperatures in Kelvin
     temperature += 273.15
     saturation_temperature += 273.15

@@ -1,5 +1,6 @@
 import math
 from app.services.thermodynamics.steam.saturation_parameters import SaturationParameters
+from app.utils.errors import DataValidationError
 
 class SpecificVolume:
   """Service class to calculate specific volume property of steam"""
@@ -27,7 +28,7 @@ class SpecificVolume:
     E7 = 0
 
     if saturation_temperature < 273.16 or saturation_temperature > 647.3:
-      raise ValueError(f"Pressure invalid: out of the range")
+      raise DataValidationError(f"Pressure invalid: out of the range")
 
 
     result = self.saturation_params.saturation_factor(saturation_temperature, A, B, C, D, E1, E2, E3, E4, E5, E6, E7) * critical_point_specific_volume
