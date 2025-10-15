@@ -1,4 +1,4 @@
-from app.utils.errors import ComputationalError
+from app.utils.errors import ComputationalError, ThermodynamicError
 
 class GasTurbine:
   """Service class of all methods and calculations related to gas turbine"""
@@ -120,5 +120,8 @@ class GasTurbine:
       raise ComputationalError("Iteration method did not converge after maximum iterations")
 
     result = new_temperature - 273.15
+
+    if result <= 24.85:
+      raise ThermodynamicError("Iteration method converge to incoherent numerical value")
 
     return result
