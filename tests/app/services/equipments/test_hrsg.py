@@ -34,6 +34,8 @@ class TestHRSG:
       low_steam_level_pressure=2,
       low_steam_level_temperature=250
     )
+    saturation_params = Mock()
+    saturation_params.saturation_temperature.side_effect = [180.87944, 200.418784, 220.5198798]
     enthalpy_calc = Mock()
     enthalpy_calc.overheated_steam.side_effect = [3100, 2900, 2700]
     enthalpy_calc.saturated_liquid.side_effect = [800, 700, 600]
@@ -41,7 +43,7 @@ class TestHRSG:
     high_steam_turbine = {"outlet_enthalpy_real": 2500}
     pump = {"outlet_real_enthalpy": 500}
 
-    result = hrsg.get_params_operation(input_mock, enthalpy_calc, high_steam_turbine, pump)
+    result = hrsg.get_params_operation(input_mock, saturation_params, enthalpy_calc, high_steam_turbine, pump)
 
     assert result["high_steam_enthaply"] == 3100
     assert result["medium_purge_enthalpy"] == 700
