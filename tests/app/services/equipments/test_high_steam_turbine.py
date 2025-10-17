@@ -5,7 +5,7 @@ from app.services.equipments.high_steam_turbine import HighSteamTurbine
 
 class TestHighSteamTurbine:
 
-  def test_get_params_operation_normal():
+  def test_get_params_operation_normal(self):
     """Test high steam turbine calculation with valid data."""
     turbine = HighSteamTurbine()
 
@@ -35,7 +35,7 @@ class TestHighSteamTurbine:
     assert "outlet_enthalpy_real" in result
     assert isinstance(result["outlet_enthalpy_real"], (float, int))
 
-  def test_get_params_operation_below_saturation_temperature():
+  def test_get_params_operation_below_saturation_temperature(self):
     """Test high steam turbine calculation with invalid data, incorrect input temperature."""
     turbine = HighSteamTurbine()
 
