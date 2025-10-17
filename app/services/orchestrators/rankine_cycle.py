@@ -40,7 +40,7 @@ class RankineCycle:
 
     # Calculating operation conditions and properties of HRSG
     heat_suplied_hrsg = self.hrsg.heat_supplied_calc(self.input, self.heat_suplier_cycle["combustion_gas"], self.heat_suplier_cycle["exhaustion_temp"], self.icph)
-    hrsg_params = self.hrsg.get_params_operation(self.input, self.enthalpy, high_steam_turbine_params, self.pump_calc()["params_operation"])
+    hrsg_params = self.hrsg.get_params_operation(self.input, self.saturation_parameters, self.enthalpy, high_steam_turbine_params, self.pump_calc()["params_operation"])
     hrsg_mass_flows = self.hrsg.get_mass_flow(self.input, hrsg_params, heat_suplied_hrsg)
     hrsg_data = {
       "heat_suplied_hrsg": heat_suplied_hrsg,
