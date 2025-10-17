@@ -1,4 +1,5 @@
 import numpy as np
+from app.utils.errors import DataValidationError, ThermodynamicError
 
 class HRSG:
   """Service class to calculate enthalpy properties of the Heat Recovery Steam Generator"""
@@ -11,19 +12,50 @@ class HRSG:
     result = abs(icph.icph_calc_heat(combustion_gas_icph_params, combustion_gas_molar_mass, exhaustion_temp, chimney_gas_temperature) * combustion_gas_mass_flow)
     return result
 
-  def get_params_operation(self, input, enthalpy_calc, high_steam_turbine, pump):
+  def get_params_operation(self, input, saturation_params, enthalpy_calc, high_steam_turbine, pump):
     """Calculation of params of operation of HRSG, and from others equipments of Rankine Cycle.
     Like as enthalpy of steam to be reheated and inlet water"""
     # Intern params of HRSG
+    levels = {
+      "high": {
+        "pressure": input.high_steam_level_pressure,
+        "temperature": input.high_steam_level_temperature
+      },
+      "medium": {
+        "pressure": input.medium_steam_level_pressure,
+        "temperature": input.medium_steam_level_temperature
+      },
+      "low": {
+        "pressure": input.low_steam_level_pressure,
+        "temperature": input.low_steam_level_temperature
+      },
+    }
+
+    # Checks that the steam turbine pressure levels are in descending order
+    if levels["high"]["pressure"] <= levels["medium"]["pressure"] or levels["medium"]["pressure"] <= levels["low"]["pressure"]:
+      raise DataValidationError("The steam turbine pressure levels are in the incorrect order. Verify if they are in descending order.")
+    
+    # Checks that the temperature of each steam level is above saturation
+  
+    for level_name, values in levels.items(): 
+      pressure = values["pressure"]
+      temp = values["temperature"]
+      saturation_temp = round(saturation_params.saturation_temperature(pressure), 2)
+    
+      if temp <= saturation_temp:
+          raise ThermodynamicError(
+              f"The {level_name} steam temperature is below saturation ({saturation_temp}°C)"
+          )
+
     # Overheated steams generated
-    high_steam_enthaply = enthalpy_calc.overheated_steam(input.high_steam_level_pressure, input.high_steam_level_temperature)
-    medium_steam_enthaply = enthalpy_calc.overheated_steam(input.medium_steam_level_pressure, input.medium_steam_level_temperature)
-    low_steam_enthaply = enthalpy_calc.overheated_steam(input.low_steam_level_pressure, input.low_steam_level_temperature)
+    high_steam_enthaply = enthalpy_calc.overheated_steam(levels["high"]["pressure"], levels["high"]["temperature"])
+    medium_steam_enthaply = enthalpy_calc.overheated_steam(levels["medium"]["pressure"], levels["medium"]["temperature"])
+    low_steam_enthaply = enthalpy_calc.overheated_steam(levels["low"]["pressure"], levels["low"]["temperature"])
 
     # Saturated liquid of purge
-    high_purge_enthalpy = enthalpy_calc.saturated_liquid(input.high_steam_level_pressure)
-    medium_purge_enthalpy = enthalpy_calc.saturated_liquid(input.medium_steam_level_pressure)
-    low_purge_enthalpy = enthalpy_calc.saturated_liquid(input.low_steam_level_pressure)
+    high_purge_enthalpy = enthalpy_calc.saturated_liquid(levels["high"]["pressure"])
+    medium_purge_enthalpy = enthalpy_calc.saturated_liquid(levels["medium"]["pressure"])
+    low_purge_enthalpy = enthalpy_calc.saturated_liquid(levels["low"]["pressure"])
 
     # Extern params
     medium_steam_cold_enthaply = high_steam_turbine["outlet_enthalpy_real"]
