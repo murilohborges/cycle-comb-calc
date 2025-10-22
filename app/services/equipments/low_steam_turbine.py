@@ -1,3 +1,5 @@
+from app.utils.errors import ThermodynamicError
+
 class LowSteamTurbine:
   """Service class to calculate properties of low pressure steam turbine"""
   def mixing_point_outlet_enthalpy(self, low_steam_enthalpy, medium_steam_turbine, hrsg_flows):
@@ -41,6 +43,10 @@ class LowSteamTurbine:
     delta_enthalpy_real = delta_enthalpy_isentropic * (efficiency / 100)
     outlet_enthalpy_real = inlet_enthalpy + delta_enthalpy_real
     real_quality_outlet_steam = (outlet_enthalpy_real - liquid_saturated_outlet_enthalpy) / (steam_saturated_outlet_enthalpy - liquid_saturated_outlet_enthalpy)
+
+    # Checks if the isentropic and real quality of the steam are between 0 and 1
+    if isentropic_quality_outlet_steam >= 1 or real_quality_outlet_steam >= 1:
+      raise ThermodynamicError("The outlet steam in the low steam turbine is still overheated or saturated, review the conditions of the power plant")
 
     return {
       "delta_enthalpy_real": delta_enthalpy_real,
