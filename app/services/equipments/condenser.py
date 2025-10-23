@@ -1,3 +1,5 @@
+from app.utils.errors import ThermodynamicError
+
 class Condenser:
   """Service class to calculate properties of condenser"""
   def __init__(self):
@@ -17,6 +19,10 @@ class Condenser:
     make_up_water_mass_flow = steam_turbine_hrsg_data["hrsg_data"]["mass_flows"]["purge"]
     outlet_enthalpy = enthalpy.saturated_liquid(operation_pressure)
     make_up_water_enthalpy = (self.specific_heat_water / water_molar_mass) * self.make_up_temperature_water # In kJ/kg
+
+    # Checks operation pressure validation
+    if operation_pressure <= 0:
+      raise ThermodynamicError("Invalid condenser pressure: must be greater than zero.")
 
     # ---Mass balance equation---
     # Getting outlet flow mass of condenser (saturated liquid)
