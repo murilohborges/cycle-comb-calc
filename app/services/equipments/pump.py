@@ -1,3 +1,5 @@
+from app.utils.errors import ThermodynamicError
+
 class Pump:
   """Service class to calculate properties of outlet water pump"""
   def get_params_operation(self, input, enthalpy, specific_volume):
@@ -17,6 +19,13 @@ class Pump:
 
     # Calculating the specific enthalpic change of the pump
     delta_specific_enthalpy = outlet_real_enthalpy - inlet_real_enthalpy
+
+    # Checks delta pressure in the pump
+    if outlet_pressure <= inlet_pressure:
+      raise ThermodynamicError(
+      f"Inconsistent pressures: outlet_pressure ({outlet_pressure} bar) "
+      f"must be greater than inlet_pressure ({inlet_pressure} bar)"
+    )
 
     return {
       "outlet_real_enthalpy": outlet_real_enthalpy,
