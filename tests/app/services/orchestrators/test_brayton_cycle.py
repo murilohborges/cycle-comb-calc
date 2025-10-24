@@ -12,7 +12,7 @@ def mock_dependencies():
 
 
 def test_brayton_cycle_run_normal(mock_dependencies, monkeypatch):
-  """Test high steam turbine calculation with valid data."""
+  """Test brayton cycle calculation with valid data."""
   mock_input, mock_substance_repo, mock_icph_repo = mock_dependencies
 
   # Mock of auxiliary classes instantiated in the constructor
@@ -64,7 +64,7 @@ def test_brayton_cycle_run_normal(mock_dependencies, monkeypatch):
   mock_gas_turbine.net_power_GT_calculation.assert_called_once()
 
 def test_brayton_cycle_run_with_error(mock_dependencies, monkeypatch):
-  """Test high steam turbine calculation with invalid data."""
+  """Test brayton cycle calculation with invalid data."""
   """Erro in LHV calculation"""
   mock_input, mock_substance_repo, mock_icph_repo = mock_dependencies
 
