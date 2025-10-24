@@ -10,6 +10,7 @@ from ..equipments.low_steam_turbine import LowSteamTurbine
 from ..equipments.condenser import Condenser
 from ..equipments.pump import Pump
 from ..utils.secant_method import SecantMethod
+from app.utils.errors import ThermodynamicError
 
 class RankineCycle:
   """Service class of all methods and calculations related to Rankine's cycle"""
@@ -66,6 +67,13 @@ class RankineCycle:
   def condenser_calc(self):
     """Calculation of operation params of Condenser"""
     params_operation = self.condenser.get_params_operation(self.input, self.substance_repo, self.enthalpy, self.hrsg_and_steam_turbine())
+    chimney_temperature = self.input.chimney_gas_temperature
+    condenser_operation_temperature = self.saturation_parameters.saturation_temperature(self.input.condenser_operation_pressure)
+    print(condenser_operation_temperature)
+    # Checks if the chimney temperature is less than the operating temperature of the condenser
+    if chimney_temperature <= condenser_operation_temperature:
+      raise ThermodynamicError("The chimney temperature is less than the operating condenser temperature. This is impossible for the thermodynamic laws. Correct these temperatures.")
+
     return params_operation
 
   def pump_calc(self):
