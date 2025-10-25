@@ -15,18 +15,6 @@ FullCyclesResult = namedtuple("FullCyclesResult", [
     "net_power_cycle_combined", "gross_cycle_combined_efficiency", "net_cycle_combined_efficiency"
 ])
 
-# Tuple input test
-FullCyclesInput = namedtuple("FullCyclesInput", [
-    "methane_molar_fraction_fuel", "ethane_molar_fraction_fuel", "propane_molar_fraction_fuel",
-    "butane_molar_fraction_fuel", "water_molar_fraction_fuel", "carbon_dioxide_molar_fraction_fuel",
-    "hydrogen_molar_fraction_fuel", "nitrogen_molar_fraction_fuel", "fuel_mass_flow",
-    "fuel_input_temperature", "air_input_temperature", "percent_excess_air",
-    "local_atmospheric_pressure", "relative_humity", "gas_turbine_efficiency",
-    "chimney_gas_temperature", "purge_level", "high_steam_level_pressure",
-    "medium_steam_level_pressure", "low_steam_level_pressure", "high_steam_level_temperature", "medium_steam_level_temperature", "low_steam_level_temperature", "high_steam_level_fraction", "medium_steam_level_fraction", "high_steam_level_efficiency", "medium_steam_level_efficiency", "low_steam_level_efficiency", "reductor_generator_set_efficiency", "pump_efficiency", "engine_pump_efficiency", "power_factor_pump_efficiency", "condenser_operation_pressure", "range_temperature_cooling_tower"
-])
-
-
 class FullCycles:
   def __init__(self, input, repositories: RepositoriesContainer):
     self.input = input
