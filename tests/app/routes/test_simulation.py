@@ -56,3 +56,12 @@ def test_create_simulation_route():
 
   assert isinstance(validated_output, Output)
 
+def test_simulation_negative_net_power():
+  # Input that would result in negative net_power_steam_turbine
+  payload = {
+    "fuel_mass_flow": 0.01,  # very low fictitious value
+    "some_other_input": 123
+  }
+
+  response = client.post("/simulation", json=payload)
+  assert response.status_code == 422  # Pydantic bloqueia
