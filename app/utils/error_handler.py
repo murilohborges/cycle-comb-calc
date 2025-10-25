@@ -1,5 +1,6 @@
 from fastapi import Request, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 from .errors import (
   ThermodynamicError,
   LogicConstraintError,
@@ -49,6 +50,19 @@ def register_error_handlers(app):
     return JSONResponse(
       status_code=500,
       content={"error": str(exc), "type": "ComputationalError"}
+    )
+
+  @app.exception_handler(RequestValidationError)
+  async def validation_error_handler(request: Request, exc: RequestValidationError):
+    # Extrai detalhes de cada erro de validação
+    errors = [{"loc": e["loc"], "msg": e["msg"], "type": e["type"]} for e in exc.errors()]
+    return JSONResponse(
+      status_code=422,
+      content={
+        "error": "Input validation failed",
+        "type": "RequestValidationError",
+        "details": errors
+      }
     )
 
   @app.exception_handler(Exception)
