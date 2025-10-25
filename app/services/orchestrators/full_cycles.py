@@ -4,7 +4,7 @@ from .brayton_cycle import BraytonCycle
 from .rankine_cycle import RankineCycle
 from ..cycles_analysis.cycles_performances import CyclesPerformances
 
-# Tuple test
+# Tuple of the result
 FullCyclesResult = namedtuple("FullCyclesResult", [
     "LHV_fuel", "air_mass_flow", "exhaustion_gas_temperature",
     "exhaustion_gas_mass_flow", "thermal_charge", "saturated_water_mass_flow",
