@@ -54,7 +54,7 @@ def register_error_handlers(app):
 
   @app.exception_handler(RequestValidationError)
   async def validation_error_handler(request: Request, exc: RequestValidationError):
-    # Extrai detalhes de cada erro de validação
+    # Extract details of each validation error
     errors = [{"loc": e["loc"], "msg": e["msg"], "type": e["type"]} for e in exc.errors()]
     return JSONResponse(
       status_code=422,
