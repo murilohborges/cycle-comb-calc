@@ -1,45 +1,39 @@
-# 🔬 Cycle Comb Calc - Microsserviço
+# 🔬 Cycle Comb Calc - Microservice
 
-Microsserviço desenvolvido com **Python** e **FastAPI** para realizar cálculos termodinâmicos relacionados ao ciclo combinado Brayton-Rankine à gás (como calor específico, entalpia, entropia, poder calorífico inferior, eficiências e potências geradas), utilizando fórmulas da literatura técnica.
+Microservice developed with **Python** and **FastAPI** to perform thermodynamic calculations related to the Brayton-Rankine gas combined cycle (such as specific heat, enthalpy, entropy, net calorific value, efficiencies and generated powers), using formulas from the technical literature.
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```bash
 cycle-comb-calc/
 │
-├── .devcontainer                   # Configurações do container para desenvolvimento
+├── .devcontainer                   # Development container configuration (for VS Code Remote Containers)
+├── .vscode                         # Editor-specific settings for VS Code
 ├── app/
-│   ├── __init__.py                 # Define o pacote 'app'
-│   ├── main.py                     # Ponto de entrada do microsserviço (FastAPI)
-│   ├── routes/                     # Rotas da API
-│   │   ├── __init__.py
-│   │   ├── simulation.py           # Rota para o endpoint "/simulation"
-│   │   └── substances.py           # Rota para o endpoint "/substances"
-│   └── models/
-│       ├── __init__.py
-│       ├── input.py                # Schema Pydantic para validação de dados de entrada do endpoint para "/simulation"
-│       ├── output.py               # Schema Pydantic para validação de dados de saída do endpoint para "/simulation"
-│       └── substance.py            # Schema Pydantic para validação de dados de saída do endpoint para "/substances"
+│   ├── controllers/                # Controllers responsible for handling endpoint actions
+│   ├── database/                   # Database-related files (connection, initialization, seeding)
+│   ├── models/                     # Pydantic schemas used for data validation and serialization
+│   ├── repositories/               # Data access layer that interacts with the database
+│   ├── routes/                     # API routes mapping endpoints to controllers
+│   ├── services/                   # Business logic and calculation classes of the application
+│   ├── utils/                      # Utility modules and helper functions
+│   └── main.py                     # Microservice entry point (FastAPI)
 │
-├── database/                       # Pasta com arquivos referentes ao banco de dados
-│       ├── __init__.py
-│       ├── create.py               # Script para executar a criação da engine do banco de dados
-│       ├── default_substances.json # Arquivo json com os dados das substância padrão"
-│       ├── engine.json             # Script para criação da engine do banco de dados"
-│       ├── models.json             # Script com o modelos das tabelas e suas colunas do banco de dados"
-│       └── seed.py                 # Script para popular do banco de dados com os dados das substâncias padrão"
-│
-├── requirements.txt                # Lista de dependências do projeto
-├── .gitignore                      # Arquivos/pastas ignorados pelo Git
-└── README.md                       # Documentação do projeto
+├── tests/                          # Unit and integration test files
+├── .editorconfig                   # Editor configuration to maintain consistent code style
+├── .gitignore                      # Files/folders ignored by Git
+├── LICENSE                         # Project license
+├── pytest.ini                      # Pytest configuration file
+├── README.md                       # Project documentation
+└── requirements.txt                # Project dependency list
 ```
 
 
-## 🚀 Como executar
+## 🚀 How to run
 
-1. Clone o repositório:
+1. Clone the repository:
 ```bash
 git clone git@github.com:seu-usuario/cycle-comb-calc.git
 
@@ -47,13 +41,13 @@ cd cycle-comb-calc
 ```
 <br>
 
-2. Crie o ambiente virtual:
+2. Create a virtual environment:
 ```bash
 python -m venv venv
 ```
 <br>
 
-3. Ative o ambiente virtual:
+3. Activate the virtual environment:
 - Linux/macOS:
 ```bash
 source venv/bin/activate
@@ -64,37 +58,37 @@ venv\Scripts\activate
 ```
 <br>
 
-4. Instale os pacotes necessários:
+4. Install the required packages:
 ```bash
 pip install -r requirements.txt
 ```
 <br>
 
-5. Execute o comando para criar e popular o banco de dados com dados padrão:
+5. Create and populate the database with default data:
 ```bash
 python -m app.database.seed
 ```
 <br>
 
-6. Execute o servidor:
+6. Run the development server:
 ```bash
 uvicorn app.main:app --reload
 ```
-Acesse em: http://localhost:8000/docs
+Access the documentation at: ```/docs```
 
 
-## ✅ Testes
-Para executar os testes:
+## ✅ Tests
+To run all tests:
 ```
 pytest
 ```
 
-## 📚 Referência Acadêmica
+## 📚 Academic Reference
 
-Este projeto é baseado no Trabalho de Conclusão de Curso (TCC) apresentado no curso de Engenharia Química:
+This project is based on the final paper presented for the Chemical Engineering degree:
 
-**Título**: *Desenvolvimento de um aplicativo para cálculos de ciclos combinados*
+**Title**: *Development of an application for combined cycle calculations*
 <br>
-[Acesse aqui o TCC](https://admin-pergamum.ifsuldeminas.edu.br/pergamumweb/vinculos/000064/00006417.pdf)
+[Access the full paper here](https://admin-pergamum.ifsuldeminas.edu.br/pergamumweb/vinculos/000064/00006417.pdf)
 
 
