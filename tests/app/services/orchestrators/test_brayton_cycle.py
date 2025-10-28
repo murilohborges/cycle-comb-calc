@@ -73,7 +73,7 @@ def test_brayton_cycle_run_with_error(mock_dependencies, monkeypatch):
   mock_gas_turbine = MagicMock()
 
   # Simulates an error in obtaining the fuel's LHV
-  mock_gas_fuel.LHV_fuel_calc.side_effect = ValueError("Erro no cálculo do LHV")
+  mock_gas_fuel.LHV_fuel_calc.side_effect = ValueError("Error in LHV calculation")
 
   # Mock other dependencies that do not influence the error
   mock_icph = MagicMock()
@@ -99,5 +99,5 @@ def test_brayton_cycle_run_with_error(mock_dependencies, monkeypatch):
   cycle = BraytonCycle(mock_input, mock_substance_repo, mock_icph_repo)
 
   # Checks if the error is propagated correctly
-  with pytest.raises(ValueError, match="Erro no cálculo do LHV"):
+  with pytest.raises(ValueError, match="Error in LHV calculation"):
     cycle.run()
