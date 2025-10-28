@@ -16,7 +16,7 @@ class TestLowSteamTurbine:
 
     result = turbine.mixing_point_outlet_enthalpy(low_steam_enthalpy, medium_steam_turbine, hrsg_flows)
 
-    # cálculo manual esperado: ((3000*8 + 2500*4) / 12) = 2833.33
+    # expected manual calculation: ((3000*8 + 2500*4) / 12) = 2833.33
     assert isclose(result, 2833.33, rel_tol=1e-3)
 
   def test_mixing_point_outlet_enthalpy_invalid_flow(self):

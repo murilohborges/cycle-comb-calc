@@ -2,7 +2,7 @@ import pytest
 from app.services.chemistry.gas_fuel import GasFuel
 from app.utils.errors import LogicConstraintError, ThermodynamicError, NotFoundError
 
-# Fixture parametrizada para frações de combustível
+# Parameterized fixture for fuel fractions
 @pytest.fixture(
       params=[
         # sum = 1.0 (valid)
@@ -61,10 +61,10 @@ class TestGasFuel:
     - If sum = 1.0 -> it shouldn't throw error
     - If sum != 1.0 -> it should throw error
     """
-    #Creates the MockInput object from the fractions_case fixture dictionary
+    # Creates the MockInput object from the fractions_case fixture dictionary
     mock_input_obj = mock_input_factory(**fractions_case)
 
-    #Mocks repositories (not used in this test)
+    # Mocks repositories (not used in this test)
     substance_repo_mock = MockSubstanceRepository()
     icph_repo_mock = MockICPHRepository()
 
@@ -155,7 +155,7 @@ class TestGasFuel:
     service = GasFuel(mock_input, substance_mock_repository, icph_mock_repository)
     result = service.icph_params_calc()
 
-    #Calculations manually the expected values
+    # Calculations manually the expected values
     expected_param_A = (0.3 * 1) + (0.7 * 2)
     expected_param_B = (0.3 * 2) + (0.7 * 4)
     expected_param_C = (0.3 * 3) + (0.7 * 6)
@@ -167,5 +167,5 @@ class TestGasFuel:
       "param_D": expected_param_D
     }
 
-    #Checks if the result is calculated correctly
+    # Checks if the result is calculated correctly
     assert result == pytest.approx(expected_params, rel=1e-2)

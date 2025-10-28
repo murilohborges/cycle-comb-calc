@@ -9,12 +9,11 @@ class MockInput:
 
 class MockEnthalpy:
   def saturated_liquid(self, pressure):
-    # Exemplo simplificado
     return 191.8  # kJ/kg
 
 class MockSpecificVolume:
   def saturated_liquid(self, pressure):
-    return 0.001  # m³/kg (aprox. para água líquida)
+    return 0.001  # m³/kg 
 
 class TestPump:
   def test_pump_get_params_operation_normal(self):

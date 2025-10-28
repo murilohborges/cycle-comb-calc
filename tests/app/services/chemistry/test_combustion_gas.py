@@ -99,7 +99,7 @@ def test_icph_params_calc_valid(combustion_gas):
 
 def test_icph_params_calc_missing(combustion_gas):
   """Testing icph_params_calc method with invalid values"""
-  # Simulando repo que não retorna ICPH
+  # Simulating repo that does not return ICPH
   class EmptyIcphRepo:
     def get_by_substance_id(self, _):
       return None
