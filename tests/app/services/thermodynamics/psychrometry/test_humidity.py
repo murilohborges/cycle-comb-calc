@@ -5,9 +5,9 @@ class TestHumidity:
   @pytest.mark.parametrize(
         "saturation_pressure, local_pressure, rh, expected",
         [
-            (0.0171, 1.0, 60, 0.0063),   # caso válido (literatura)
-            (0.0171, 1.0, 0, 0.0),       # umidade relativa zero
-            (0.0171, 1.0, 100, 0.0107),  # saturado (valor aproximado)
+            (0.0171, 1.0, 60, 0.0063),   # valid case (literature)
+            (0.0171, 1.0, 0, 0.0),       # zero relative humidity
+            (0.0171, 1.0, 100, 0.0107),  # saturated (approximate value)
         ]
     )
 
