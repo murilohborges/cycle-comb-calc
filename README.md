@@ -35,7 +35,7 @@ cycle-comb-calc/
 
 1. Clone the repository:
 ```bash
-git clone git@github.com:seu-usuario/cycle-comb-calc.git
+git clone git@github.com:murilohborges/cycle-comb-calc.git
 
 cd cycle-comb-calc
 ```
