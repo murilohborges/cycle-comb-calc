@@ -74,7 +74,16 @@ python -m app.database.seed
 ```bash
 uvicorn app.main:app --reload
 ```
-Access the documentation at: ```/docs```
+
+
+## 🧭 API Documentation
+
+Once the server is running, open your browser and go to:
+
+➡️ **Swagger UI:** `http://<your-local-address>:<port>/docs`  
+➡️ **ReDoc:** `http://<your-local-address>:<port>/redoc`
+
+> 💡 *By default, FastAPI runs on* `http://127.0.0.1:8000` *or* `http://localhost:8000`
 
 
 ## ✅ Tests
