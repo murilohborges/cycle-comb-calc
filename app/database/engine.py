@@ -1,3 +1,4 @@
 from sqlmodel import create_engine
+from app.core.config import settings
 
-engine = create_engine("sqlite:///./app/database/database.db", echo=False)
+engine = create_engine(settings.DATABASE_URL, echo=False)
