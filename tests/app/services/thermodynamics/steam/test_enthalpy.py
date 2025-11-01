@@ -25,6 +25,19 @@ class TestEnthalpy:
     # Since the factor returned 1, the result should be equal to the critical_point_enthalpy defined in the range (2099.3)
     assert math.isclose(result, 418.4, rel_tol=1e-1)
 
+  def test_saturated_liquid_high_temperature_range(self, mock_saturation_parameters):
+    """Test saturated_liquid for high temperature range (600 <= T <= 647.3)."""
+    # Forçar T = 600 K - 273.15 = 326.85 °C
+    mock_saturation_parameters.saturation_temperature.return_value = 326.85
+    mock_saturation_parameters.saturation_factor.return_value = 1
+
+    enthalpy = Enthalpy(saturation_params=mock_saturation_parameters)
+    result = enthalpy.saturated_liquid(pressure=1)
+
+    # It must return a consistent numeric value (without exception).
+    assert isinstance(result, float)
+    assert result != 0
+
   def test_saturated_liquid_invalid_pressure(self, mock_saturation_parameters):
     """Test saturated_liquid calculation with invalid data."""
     # Force value out of range (< 273.16 K or > 647.3 K)
@@ -52,7 +65,7 @@ class TestEnthalpy:
     with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       enthalpy.saturated_liquid(pressure=1)
 
-  # ---------- TESTES PARA overheated_steam ----------
+  # ---------- TESTS for overheated_steam ----------
   def test_overheated_steam_valid(self):
     """Test overheated_steam calculation with valid data."""
     enthalpy = Enthalpy()
@@ -78,3 +91,13 @@ class TestEnthalpy:
     # negative pressure -> may give strange results
     with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       enthalpy.overheated_steam(pressure=-5, temperature=200)
+
+  def test_overheated_steam_raises_data_validation_error(self):
+    """Ensure overheated_steam propagates DataValidationError from saturation_parameters."""
+    mock_params = Mock()
+    mock_params.saturation_temperature.side_effect = DataValidationError("Invalid pressure")
+
+    enthalpy = Enthalpy(saturation_params=mock_params)
+
+    with pytest.raises(DataValidationError, match="Invalid pressure"):
+      enthalpy.overheated_steam(pressure=5, temperature=300)

@@ -24,6 +24,19 @@ class TestEntropy:
 
     assert math.isclose(result, 1.3050, rel_tol=1e-2)
 
+  def test_saturated_liquid_high_temperature_range(self, mock_saturation_parameters):
+    """Test saturated_liquid for high temperature range (600 <= T <= 647.3)."""
+    # Forçar T = 600 K - 273.15 = 326.85 °C
+    mock_saturation_parameters.saturation_temperature.return_value = 326.85
+    mock_saturation_parameters.saturation_factor.return_value = 1
+
+    enthalpy = Entropy(saturation_params=mock_saturation_parameters)
+    result = enthalpy.saturated_liquid(pressure=1)
+
+    # It must return a consistent numeric value (without exception).
+    assert isinstance(result, float)
+    assert result != 0
+
   def test_saturated_liquid_invalid_pressure(self, mock_saturation_parameters):
     """Test saturated_liquid calculation with invalid data."""
     # Force out-of-range value
@@ -78,3 +91,13 @@ class TestEntropy:
     # Negative pressure -> math.log() domain error
     with pytest.raises(DataValidationError, match="Pressure invalid: out of the range"):
       entropy.overheated_steam(pressure=-5, temperature=200)
+
+  def test_overheated_steam_raises_data_validation_error(self):
+    """Ensure overheated_steam propagates DataValidationError from saturation_parameters."""
+    mock_params = Mock()
+    mock_params.saturation_temperature.side_effect = DataValidationError("Invalid pressure")
+
+    enthalpy = Entropy(saturation_params=mock_params)
+
+    with pytest.raises(DataValidationError, match="Invalid pressure"):
+      enthalpy.overheated_steam(pressure=5, temperature=300)
