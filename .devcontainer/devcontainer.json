@@ -5,9 +5,9 @@
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.12.1"
     },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:1": {}
   },
-  "postCreateCommand": "python -m venv venv && source venv/bin/activate && pip install -r requirements.txt",
+  "postCreateCommand": "python -m venv venv && . venv/bin/activate && pip install -r requirements.txt || true",
   "forwardPorts": [8000],
   "customizations": {
     "vscode": {
