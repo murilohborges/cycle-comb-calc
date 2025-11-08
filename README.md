@@ -121,7 +121,7 @@ pytest
 If you prefer to run tests inside the Docker container:
 ```
 docker compose exec api pytest
-`
+```
 
 ## 📚 Academic Reference
 
