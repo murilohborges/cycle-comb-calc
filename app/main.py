@@ -17,9 +17,8 @@ app.include_router(substances.router)
 register_error_handlers(app)
 
 origins = [
-  "http://localhost:5173",
+  "https://cycle-comb-calc.onrender.com",
   "https://cyclecombcalc.netlify.app/",
-  "https://cycle-comb-calc.onrender.com"
 ]
 
 app.add_middleware(
