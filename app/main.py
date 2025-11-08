@@ -1,20 +1,33 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from .routes import simulation, substances
 from typing import List
 from app.utils.error_handler import register_error_handlers
 import logging
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 
 # Show only SQLAlchemy warnings and errors
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
+limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(
   title="Simulator for combined thermodynamic cycles (Brayton-Rankine)")
 app.include_router(simulation.router)
 app.include_router(substances.router)
 register_error_handlers(app)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
+@app.middleware("http")
+@limiter.limit("20/minute")
+async def global_rate_limit(request: Request, call_next):
+    return await call_next(request)
 
 origins = [
   "http://localhost:5173",
