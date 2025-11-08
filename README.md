@@ -2,6 +2,8 @@
 
 Microservice developed with **Python** and **FastAPI** to perform thermodynamic calculations related to the Brayton-Rankine gas combined cycle (such as specific heat, enthalpy, entropy, net calorific value, efficiencies and generated powers), using formulas from the technical literature.
 
+**Live API:** [cycle-comb-calc.onrender.com/docs](https://cycle-comb-calc.onrender.com/docs)
+
 ---
 
 ## 📁 Project Structure
@@ -9,7 +11,7 @@ Microservice developed with **Python** and **FastAPI** to perform thermodynamic 
 ```bash
 cycle-comb-calc/
 │
-├── .devcontainer                   # Development container configuration (for VS Code Remote Containers)
+├── .devcontainer/                  # Development container configuration (for VS Code Remote Containers)
 ├── .vscode                         # Editor-specific settings for VS Code
 ├── app/
 │   ├── controllers/                # Controllers responsible for handling endpoint actions
@@ -26,12 +28,15 @@ cycle-comb-calc/
 ├── .gitignore                      # Files/folders ignored by Git
 ├── LICENSE                         # Project license
 ├── pytest.ini                      # Pytest configuration file
+├── docker-compose.yml              # Docker Compose configuration for local deployment
+├── Dockerfile                      # Docker build instructions
+├── entrypoint.sh                   # Container startup script
 ├── README.md                       # Project documentation
 └── requirements.txt                # Project dependency list
 ```
 
 
-## 🚀 How to run
+## 🚀 Running Locally (Manual Setup)
 
 1. Clone the repository:
 ```bash
@@ -76,6 +81,27 @@ uvicorn app.main:app --reload
 ```
 
 
+## 🐳 Running with Docker (Recommended)
+
+1. Build and start the container:
+```bash
+docker compose up --build
+```
+<br>
+
+2. Access the API:
+- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Redoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+<br>
+<br>
+
+3. Stop and remove the container:
+```bash
+docker compose down
+```
+💾 The SQLite database is persisted via a Docker volume defined in docker-compose.yml.This ensures data is not lost when the container is rebuilt.
+
+
 ## 🧭 API Documentation
 
 Once the server is running, open your browser and go to:
@@ -86,11 +112,16 @@ Once the server is running, open your browser and go to:
 > 💡 *By default, FastAPI runs on* `http://127.0.0.1:8000` *or* `http://localhost:8000`
 
 
-## ✅ Tests
+## ✅ Running Tests
 To run all tests:
 ```
 pytest
 ```
+
+If you prefer to run tests inside the Docker container:
+```
+docker compose exec api pytest
+`
 
 ## 📚 Academic Reference
 
@@ -101,7 +132,3 @@ This project is based on the final paper presented for the Chemical Engineering 
 [Access the full paper here](https://admin-pergamum.ifsuldeminas.edu.br/pergamumweb/vinculos/000064/00006417.pdf)
 
 ---
-
-## 🧠 Thermodynamic Concept
-
-The Combined Brayton–Rankine Cycle integrates a gas turbine (Brayton cycle) with a steam turbine (Rankine cycle), using waste heat from the gas turbine exhaust to generate additional power — significantly increasing overall plant efficiency.
