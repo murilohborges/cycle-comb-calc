@@ -24,11 +24,10 @@ register_error_handlers(app)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-app.add_middleware(
-    SlowAPIMiddleware,
-    limiter=limiter,
-    default_limits=["20/minute"]
-)
+@app.middleware("http")
+@limiter.limit("20/minute")
+async def global_rate_limit(request: Request, call_next):
+    return await call_next(request)
 
 origins = [
   "http://localhost:5173",
