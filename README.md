@@ -100,4 +100,8 @@ This project is based on the final paper presented for the Chemical Engineering 
 <br>
 [Access the full paper here](https://admin-pergamum.ifsuldeminas.edu.br/pergamumweb/vinculos/000064/00006417.pdf)
 
+---
 
+## 🧠 Thermodynamic Concept
+
+The Combined Brayton–Rankine Cycle integrates a gas turbine (Brayton cycle) with a steam turbine (Rankine cycle), using waste heat from the gas turbine exhaust to generate additional power — significantly increasing overall plant efficiency.
