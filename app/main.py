@@ -18,6 +18,7 @@ register_error_handlers(app)
 
 origins = [
   "http://localhost:5173",
+  "https://cyclecombcalc.netlify.app/",
   "https://cycle-comb-calc.onrender.com"
 ]
 
