@@ -18,7 +18,8 @@ register_error_handlers(app)
 
 origins = [
   "https://cycle-comb-calc.onrender.com",
-  "https://cyclecombcalc.netlify.app/",
+  "https://cyclecombcalc.netlify.app",
+  "http://localhost:5173"
 ]
 
 app.add_middleware(
