@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-from slowapi.middleware import SlowAPIMiddleware
+from fastapi.responses import JSONResponse
 
 # Show only SQLAlchemy warnings and errors
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
@@ -22,7 +22,16 @@ app.include_router(substances.router)
 register_error_handlers(app)
 
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded):
+    return JSONResponse(
+        status_code=429,
+        content={
+            "detail": "Too many requests — please wait a moment before trying again."
+        },
+    )
+
 
 @app.middleware("http")
 async def global_rate_limit(request: Request, call_next):
