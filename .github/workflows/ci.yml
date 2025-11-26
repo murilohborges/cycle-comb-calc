@@ -34,7 +34,7 @@ jobs:
       
       - name: Seed database
         run: |
-          python -m app.database.seed.py
+          python -m app.database.seed
 
       - name: Run tests
         run: |
