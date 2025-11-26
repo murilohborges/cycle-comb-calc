@@ -1,0 +1,41 @@
+name: CI/CD - FastAPI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+
+      - name: Set Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+      
+      - name: Recreate database
+        run: |
+          if [ -f app/database/database.db ]; then
+            echo "Removing existing database..."
+            rm database.db
+          fi
+      
+      - name: Seed database
+        run: |
+          python seed.py
+
+      - name: Run tests
+        run: |
+          pytest -q
