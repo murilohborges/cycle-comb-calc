@@ -23,7 +23,7 @@ def populate_database_tables():
         substance = Substance(
           name=item["name"],
           molar_mass=item["molar_mass"],
-          lower_calorific_value=item["lower_calorific_value"],
+          lower_calorific_value=item["lhv"],
           formula=item["formula"],
           cas_number=item["cas_number"],
           is_default=item["is_default"]
@@ -34,9 +34,7 @@ def populate_database_tables():
         corr = CorrelationSpecificHeat(
           substance_id=substance.id,
           param_A=item["param_A"],
-          param_B=item["param_B"],
           param_C=item["param_C"],
-          param_D=item["param_D"],
           is_default=item["is_default"]
         )
         session.add(corr)
