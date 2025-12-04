@@ -123,6 +123,18 @@ If you prefer to run tests inside the Docker container:
 docker compose exec api pytest
 ```
 
+## 🌐 CORS Configuration
+
+The service uses FastAPI’s CORS middleware to allow requests from specific frontends.
+
+Allowed origins:
+
+- http://localhost:5173 – Local frontend development
+
+- https://cyclecombcalc.netlify.app/ – Production frontend
+
+Configuration is located in `app/main.py`
+
 ## 📚 Academic Reference
 
 This project is based on the final paper presented for the Chemical Engineering degree:
