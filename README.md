@@ -1,6 +1,17 @@
-# 🔬 Cycle Comb Calc - Microservice
+# ⚡ Combined Cycle Power Plant Calculator - Microservice
 
-Microservice developed with **Python** and **FastAPI** to perform thermodynamic calculations related to the Brayton-Rankine gas combined cycle (such as specific heat, enthalpy, entropy, net calorific value, efficiencies and generated powers), using formulas from the technical literature.
+This project is a backend microservice designed to perform thermodynamic calculations
+commonly used in Combined Cycle Power Plants (CCPP), which integrate gas turbine
+(Brayton cycle) and steam turbine (Rankine cycle) systems for thermal power generation.
+
+The service exposes calculation logic through a RESTful API built with **Python** and **FastAPI**,
+allowing external applications to request cycle parameters, efficiencies, and
+thermodynamic properties in a structured and scalable way.
+
+While the thermodynamic calculations are based on an academic project, the main goal
+of this repository is to apply software engineering practices by exposing the logic
+as a RESTful microservice, designed to be consumed by a web application or other
+distributed systems.
 
 **Live API:** [cycle-comb-calc.onrender.com/docs](https://cycle-comb-calc.onrender.com/docs)
 
