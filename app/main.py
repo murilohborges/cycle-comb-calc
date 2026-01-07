@@ -11,7 +11,9 @@ logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
 
 app = FastAPI(
-  title="Simulator for combined thermodynamic cycles (Brayton-Rankine)")
+  title="Combined Cycle Power Plant Calculator API",
+  description="Microservice for thermodynamic calculations applied to combined cycle thermal power plants (CCPP)",
+)
 app.include_router(simulation.router)
 app.include_router(substances.router)
 register_error_handlers(app)
@@ -40,7 +42,7 @@ class InfoResponse(BaseModel):
 @app.get("/", response_model=InfoResponse, tags=["Root"])
 async def read_root():
   return InfoResponse(
-    message="Welcome to the Combined Thermodynamic Cycles Calculations API!",
+    message="Welcome to the Combined Cycle Power Plant Calculator API!",
     description="Microservice for combined thermodynamic cycles calculations.",
     available_endpoints=["POST /simulation", "GET /substances"],
     documentation="/docs"
