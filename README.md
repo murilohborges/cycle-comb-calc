@@ -94,30 +94,62 @@ uvicorn app.main:app --reload
 
 ## 🐳 Running with Docker (Recommended)
 
-1. Build and start the container:
+🐳 Running with Docker (Recommended)
+
+1. Clone the repository:
+
+```bash
+git clone git@github.com:murilohborges/cycle-comb-calc.git
+
+cd cycle-comb-calc
+```
+
+2. Create the environment configuration file:
+
+```bash
+cp .env.example .env
+```
+
+3. Fill the environment variables inside `.env`:
+
+```env
+# Environment
+ENV=development
+
+# Debug
+DEBUG=true
+
+# SQLite database path or URL
+DATABASE_URL=sqlite:///app/data/app.db
+```
+
+4. Build and start the container:
+
 ```bash
 docker compose up --build
 ```
-<br>
 
-2. Access the API:
+5. Access the API:
 - **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
 - **Redoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 <br>
 <br>
 
-3. Stop and remove the container:
+6. Stop and remove the container:
 ```bash
 docker compose down
 ```
 💾 The SQLite database is persisted via a Docker volume defined in docker-compose.yml.This ensures data is not lost when the container is rebuilt.
+<br>
+💡 The `.env.example` file is provided as a template.
+Create a `.env` file from it and adjust the values according to your local environment.
 
 
 ## 🧭 API Documentation
 
 Once the server is running, open your browser and go to:
 
-➡️ **Swagger UI:** `http://<your-local-address>:<port>/docs`  
+➡️ **Swagger UI:** `http://<your-local-address>:<port>/docs`
 ➡️ **ReDoc:** `http://<your-local-address>:<port>/redoc`
 
 > 💡 *By default, FastAPI runs on* `http://127.0.0.1:8000` *or* `http://localhost:8000`
