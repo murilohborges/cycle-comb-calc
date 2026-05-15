@@ -120,7 +120,7 @@ ENV=development
 DEBUG=true
 
 # SQLite database path or URL
-DATABASE_URL=sqlite:///app/data/app.db
+DATABASE_URL=sqlite:///app/database/database.db
 ```
 
 4. Build and start the container:
